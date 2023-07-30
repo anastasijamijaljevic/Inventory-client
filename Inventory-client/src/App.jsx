@@ -10,6 +10,7 @@ import Home from './pages/Home'
 import AboutUs from './components/AboutUs'
 import GetStarted from './components/GetStarted'
 import RegistrationForm from './pages/RegistrationForm'
+import LoginForm from './pages/LoginForm'
 
 function App() {
   const [count, setCount] = useState(0)
