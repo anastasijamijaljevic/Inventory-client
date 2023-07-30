@@ -1,0 +1,39 @@
+h1 {
+    font-weight: normal;
+    text-align: center;
+}
+
+.room-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .room-item {
+    flex: 1 1 200px;
+    max-width: 200px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease; 
+  }
+  
+  .room-item:hover {
+    transform: scale(1.1); 
+  }
+  
+  .room-item div {
+    margin-bottom: 8px;
+  }
+  
+  .room-item strong {
+    color: #333;
+    font-weight: normal;
+  }
+  
+  
+
+  li {
+    list-style-type: none;
+  }

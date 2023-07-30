@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import api from './api/api'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Rooms from './pages/Rooms'
 
 import Home from './pages/Home'
 import AboutUs from './components/AboutUs'
@@ -239,7 +240,7 @@ function App() {
   return (
     <>
    
-    <Home/>
+    <Rooms/>
   
     </>
   )
