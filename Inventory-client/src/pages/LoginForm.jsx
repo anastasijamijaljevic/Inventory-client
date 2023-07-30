@@ -51,7 +51,7 @@ const LoginForm = () => {
       errors.username = 'Username is required';
     }
     if (!data.password.trim()) {
-      errors.password = 'Password je obavezna';
+      errors.password = 'Password is required';
     }
     return errors;
   };
