@@ -6,7 +6,7 @@ const api = axios.create({
 
  
 
-export default {api,fetch};
+export default api;
 
 
 
