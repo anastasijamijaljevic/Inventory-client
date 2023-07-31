@@ -7,11 +7,12 @@ import api from './api/api'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Rooms from './pages/Rooms'
 
-import Home from './pages/Home'
-import AboutUs from './components/AboutUs'
+import Home from './pages/Home/Home'
+import AboutUs from './pages/AboutUs/AboutUs';
 import GetStarted from './components/GetStarted'
-import RegistrationForm from './pages/RegistrationForm'
-import LoginForm from './pages/LoginForm'
+import RegistrationForm from './pages/Register/RegistrationForm'
+import LoginForm from './pages/Login/LoginForm'
+import Error404 from './pages/Error404/error404'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -61,7 +62,7 @@ function App() {
 
 
 
-  //Inventory Methods
+    //Inventory Methods
   const getAllInventories = async () =>{
         try{
           const result = await api.get("/api/Inventory");
@@ -239,9 +240,17 @@ function App() {
 
   return (
     <>
-   
-    <Rooms/>
-  
+   <Routes>
+    <Route  path='/' element ={<Home/>}/>
+    <Route  path='/rooms' element ={<Rooms/>}/>
+    <Route  path='/about' element ={<AboutUs/>}/>
+    <Route  path='/login' element ={<LoginForm/>}/>
+    <Route  path='/register' element ={<RegistrationForm/>}/>
+    <Route  path='*' element ={<Error404/>}/>
+   </Routes>
+
+
+    
     </>
   )
 }
