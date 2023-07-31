@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import api from './api/api'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Rooms from './pages/Rooms'
 
 import Home from './pages/Home/Home'
 import AboutUs from './pages/AboutUs/AboutUs';
@@ -241,11 +242,15 @@ function App() {
     <>
    <Routes>
     <Route  path='/' element ={<Home/>}/>
+    <Route  path='/rooms' element ={<Rooms/>}/>
     <Route  path='/about' element ={<AboutUs/>}/>
     <Route  path='/login' element ={<LoginForm/>}/>
     <Route  path='/register' element ={<RegistrationForm/>}/>
     <Route  path='*' element ={<Error404/>}/>
    </Routes>
+
+
+    
     </>
   )
 }
