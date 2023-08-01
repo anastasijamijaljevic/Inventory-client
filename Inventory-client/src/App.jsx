@@ -224,10 +224,10 @@ function App() {
 
 
   useEffect(() => {
-    getAllInventories();
-    getInventoryById("d74e3a55-7a36-428c-a2f7-5360a1c643ee");
-    getAllWorkers();
-    getAllRooms();
+    //getAllInventories();
+    //getInventoryById("d74e3a55-7a36-428c-a2f7-5360a1c643ee");
+   // getAllWorkers();
+    //getAllRooms();
   }, []);
 
 
