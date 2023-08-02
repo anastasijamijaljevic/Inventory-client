@@ -38,3 +38,14 @@ h1 {
   li {
     list-style-type: none;
   }
+
+  .room-link {
+    text-decoration: none;
+    color: #1c2541;
+    font-weight: bold;
+    transition: color 0.2s; 
+  }
+  
+  .room-link:hover {
+    color: #1c2541; 
+  }

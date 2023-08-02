@@ -29,20 +29,22 @@ const Rooms = () => {
       <h1>Rooms</h1>
       <ul className="room-list">
         {rooms.map((room) => (
-          <li key={room.id} className="room-item">
-            <div>
-            <Link to={`../room/${room.id}`}>{room.name}</Link>
-            </div>
-            <div>
-              <strong>Floor:</strong> {room.floor}
-            </div>
-            <div>
-              <strong>Boss:</strong> {room.boss}
-            </div>
-            <div>
-              <strong>Inventory:</strong> {room.inventory.name}
-            </div>
-          </li>
+          <Link to={`../room/${room.id}`} key={room.id} className="room-link">
+            <li className="room-item">
+              <div>
+                {room.name}
+              </div>
+              <div>
+                <strong>Floor:</strong> {room.floor}
+              </div>
+              <div>
+                <strong>Boss:</strong> {room.boss}
+              </div>
+              <div>
+                <strong>Inventory:</strong> {room.inventory.name}
+              </div>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>
