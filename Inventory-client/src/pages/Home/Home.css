@@ -1,76 +1,118 @@
-.hero {
-    box-sizing: border-box;
-    flex-shrink: 0;
-    width: 100%;
-    height: min-content;
+
+.homepage {
+    background-image: url(https://png.pngtree.com/thumb_back/fh260/background/20201012/pngtree-grey-and-white-clouds-background-image_413281.jpg);
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 100px 100px 100px 100px;
-    background-color: #fffcf2;
-    min-height: 800px;
-    overflow: hidden;
-    position: relative;
-    align-content: center;
-    flex-wrap: nowrap;
-    gap: 0;
-    border-radius: 0px 0px 0px 0px;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: #f1f1f1;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+  .navbar {
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex; 
+    justify-content: space-between; 
+    border-bottom: none; 
+  }
+  
+  .nav-logo {
+    width: 40px;
+    height: 40px;
+    background-image: url(https://www.shutterstock.com/shutterstock/photos/2069972330/display_1500/stock-vector-vector-illustration-of-three-box-packages-icon-in-dark-color-and-transparent-background-png-2069972330.jpg);
+    background-size: cover;
+  }
+ 
+  
+  .nav-right {
+    display: flex; 
+  }
+  
+  .nav-list {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-list li {
+    margin-right: 1rem;
+    margin-top: 10px;
+  }
+  
+  .nav-list li:last-child {
+    margin-right: 10px;
+  }
+  
+  .nav-list li a {
+    text-decoration: none;
+    color: #333;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .nav-list li a:hover {
+    background-color: #1c2541;
+    color: #fff;
+  }
+  
+.left-section {
+    background-color: #f1f1f1;
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .left-section h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    background-color: #f1f1f1;
+  }
+  
+  .left-section p {
+    font-size: 1.2rem;
+    color: #333;
+    background-color: #f1f1f1;
+  }
+  
+  .get-started-btn {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #1c2541;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    height: 40px;
+    width: 200px;
+    margin-left: 29%;
+  }
+  
+  .get-started-btn:hover {
+    background-color: #3c466e;
+  }
 
-}
+  
+  
+  
+  
+  
+  
+  
 
-.inventoryize {
-     
-        flex-shrink: 0;
-        width: 100%;
-        height: auto; /* 167px */
-        white-space: pre;
-        position: relative;
-        font-weight: 100;
-        font-style: normal;
-        font-family:  'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        color: #000000;
-        font-size: 100px;
-        letter-spacing: 0em;
-        text-transform: uppercase;
-        line-height: 1.1;
-        text-align: center;
-      
-}
+  
 
-.home-image {
-     
-        flex-shrink: 0;
-        width: 100%;
-        height: 500px;
-        display: block;
-        -webkit-filter: grayscale(1);
-        filter: grayscale(1);
-        overflow: hidden;
-        position: relative;
-        background-image: url(https://cdn.corporatefinanceinstitute.com/assets/Inventory.jpeg);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        border-radius: 20px;
-}
+  
+  
 
-.about-us{
-    
-        flex-shrink: 0;
-        width: auto; /* 71px */
-        height: auto; /* 19px */
-        white-space: pre;
-        position: relative;
-        font-weight: 400;
-        font-style: normal;
-        font-family: "Golos Text", "Golos Text Placeholder", sans-serif;
-        color: #000000;
-        font-size: 16px;
-        letter-spacing: 0em;
-        line-height: 1.2;
-      }
-
-
-
-     
+  
+  
+  

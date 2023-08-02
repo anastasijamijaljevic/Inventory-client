@@ -6,10 +6,8 @@ import axios from 'axios'
 import api from './api/api'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Rooms from './pages/Rooms/Rooms'
-
 import Home from './pages/Home/Home'
 import AboutUs from './pages/AboutUs/AboutUs';
-import GetStarted from './components/GetStarted'
 import RegistrationForm from './pages/Register/RegistrationForm'
 import LoginForm from './pages/Login/LoginForm'
 import Error404 from './pages/Error404/error404'
