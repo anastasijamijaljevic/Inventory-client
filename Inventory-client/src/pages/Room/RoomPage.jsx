@@ -1,13 +1,18 @@
+/* eslint-disable react/jsx-key */
 import { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import api from '../../api/api'
+import { storage } from '../../firebase'
+import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 
 const RoomPage = () => {
     const { id } = useParams();
     const [worker, setWorker] = useState([]);
     const [room, setRoom] = useState([]);
     const [inventory,setInventory] = useState([])
+    // const [imageList,setImageList] = useState([])
+    // const imageListRef = ref(storage, "images/")
 
     const getRoomById = async (id) => {
       try {
@@ -46,6 +51,15 @@ const RoomPage = () => {
     }
     
     useEffect(() =>{
+
+      // listAll(imageListRef).then((response) => {
+      //   response.items.forEach((item) =>{
+      //     getDownloadURL(item).then((url) => {
+      //       setImageList((prev) => [...prev, url])
+      //     })
+      //   })
+      // })
+       
       getRoomById(id);
       getWorkerById(room.workerId)
       getAllInventories();
@@ -86,6 +100,11 @@ const RoomPage = () => {
               <h1>Personalnumber: {worker.personalnumber}</h1>
               <h1>Qualification: {worker.qualification}</h1>
             </div>
+
+            {/* {imageList.map((url) => {
+          return <img style={{width:300 , height:100}} src={url} />
+        })} */}
+        
 
 {/*             
            <div>
