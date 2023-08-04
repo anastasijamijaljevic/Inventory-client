@@ -34,6 +34,7 @@ const Rooms = () => {
     //   })
     // })
 
+    
     const getAllRooms = async () => {
       try {
         const result = await api.get('/api/Room');
