@@ -4,12 +4,32 @@ import { useEffect } from 'react'
 import api from '../../api/api'
 import './Rooms.css'
 import { Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import CreateRoom from '../../components/CreateRoom'
 import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 
 
+
 const Rooms = () => {
+  const { id } = useParams();
   const [rooms, setRooms] = useState([]);
+
+
+  const refreshRooms = async () => {
+    try {
+      const result = await api.get('/api/Room');
+      const data = result.data;
+      setRooms(data);
+      console.log(data);
+    } catch (error) {
+      console.log('Error fetching rooms:', error);
+    }
+  };
+ 
+
+
+    refreshRooms();
 
   // const [imageList,setImageList] = useState([])
   // const [imageUpload,setImageUpload] = useState(null)
@@ -47,9 +67,15 @@ const Rooms = () => {
     };
 
     getAllRooms();
+
   }, []);
 
+  
+
+ 
+
   return (
+    <>
     <div className="room-list-container">
       <h1>Rooms</h1>
       <ul className="room-list">
@@ -87,7 +113,10 @@ const Rooms = () => {
         
       </div> */}
     </div>
+    <CreateRoom refreshRooms={refreshRooms} />
+  
 
+</>
   )
 
 }

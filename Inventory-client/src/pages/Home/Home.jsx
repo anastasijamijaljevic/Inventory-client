@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom'
 import './Home.css'
+
 
 const Home = () => {
     return (
@@ -7,12 +9,12 @@ const Home = () => {
                 <div className='nav-logo'></div>
                 <div className="nav-right">
           <ul className="nav-list">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Rooms</a></li>
-            <li><a href="#">How It Works</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Login</a></li>
-            <li><a href="#">Sign Up</a></li>
+            <li><Link to="/" className="nav-link">Home</Link></li>
+            <li> <Link to="/rooms" className="nav-link">Rooms</Link></li>
+            <li> <Link to="/" className="nav-link">How It Works</Link></li>
+            <li> <Link to="/about" className="nav-link">About Us</Link></li>
+            <li> <Link to="/login" className="nav-link">Log In</Link></li>
+            <li> <Link to="/register" className="nav-link">Sign Up</Link></li>
           </ul>
         </div>
             </nav>

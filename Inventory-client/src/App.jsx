@@ -251,7 +251,7 @@ function App() {
       </Routes>
 
 
-<Rooms />
+
 
 
     </>

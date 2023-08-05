@@ -61,6 +61,7 @@ const RoomPage = () => {
   
     useEffect(() =>{
 
+
       // getDownloadURL(imageListRef).then((url) => {
       //   setImageList(url)
       //   //console.log(imageList)
@@ -92,6 +93,7 @@ const RoomPage = () => {
       
       return (
            <div className="room-details">
+
 
             {image && (
             <img style={{width:300 , height:100}} src={image} alt="Image not Found" />
