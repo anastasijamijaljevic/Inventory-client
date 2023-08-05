@@ -113,7 +113,7 @@ const CreateRoom = ({ refreshRooms }) => {
       
       <input
           type="text"
-          placeholder="Room ID" // Dodato za id
+          placeholder="Room ID" 
           value={roomId}
           onChange={(e) => setRoomId(e.target.value)}
         />

@@ -57,10 +57,10 @@ const RoomPage = () => {
     
     useEffect(() =>{
 
-      getDownloadURL(imageListRef).then((url) => {
-        setImageList(url)
+      //getDownloadURL(imageListRef).then((url) => {
+        //setImageList(url)
         //console.log(imageList)
-      })
+      //})
       // listAll(imageListRef).then((response) => {
       //   response.items.forEach((item) =>{
       //     getDownloadURL(item).then((url) => {
@@ -84,7 +84,7 @@ const RoomPage = () => {
       return (
            <div className="room-details">
 
-            <img style={{width:300 , height:100}} src={imageList} />
+            {/*<img style={{width:300 , height:100}} src={imageList} />*/}
 
             <h1>ID SOBE:{id}</h1>
             <div>

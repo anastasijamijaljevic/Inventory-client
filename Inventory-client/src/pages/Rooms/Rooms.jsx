@@ -16,11 +16,21 @@ const Rooms = () => {
   const [rooms, setRooms] = useState([]);
 
 
-  
+  const refreshRooms = async () => {
+    try {
+      const result = await api.get('/api/Room');
+      const data = result.data;
+      setRooms(data);
+      console.log(data);
+    } catch (error) {
+      console.log('Error fetching rooms:', error);
+    }
+  };
  
-  
 
-    
+
+    refreshRooms();
+
   // const [imageList,setImageList] = useState([])
   // const [imageUpload,setImageUpload] = useState(null)
   // const imageListRef = ref(storage, "images/")
@@ -61,7 +71,7 @@ const Rooms = () => {
   }, []);
 
   
- 
+
  
 
   return (
@@ -108,7 +118,7 @@ const Rooms = () => {
 
 </>
   )
-    
-    }
+
+}
 
 export default Rooms;
