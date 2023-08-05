@@ -60,7 +60,7 @@ const Rooms = () => {
         const result = await api.get('/api/Room');
         const data = result.data;
         setRooms(data);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.log('Error fetching rooms:', error);
       }
