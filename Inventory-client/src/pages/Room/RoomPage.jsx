@@ -11,14 +11,34 @@ const RoomPage = () => {
     const { id } = useParams();
     const [room, setRoom] = useState([]);
     const [inventory,setInventory] = useState([])
-    const [worker, setWorker] = useState([])
-    const [imageList,setImageList] = useState({})
-    const imageListRef = ref(storage, "images/react-porfolio.png")
+    const [image , setImage] = useState('');
 
 
-    // const PrintButton = () => {
-    //   window.print();
-    // }
+
+    const getAllInventories = async () => {
+      try {
+        const result = await api.get("/api/Inventory");
+        const data = result.data;
+        setInventory(data);
+
+        console.log(data)
+      }
+      catch (error) {
+        console.log(error)
+      }
+    }
+
+    const getImage = async (imageName) => {
+      const imageRef = ref(storage,`images/${imageName}`);
+      try {
+        const url = await getDownloadURL(imageRef);
+        return url;
+      } catch (error) {
+        console.error('Error getting image URL from Firebase:', error);
+        return null;
+      }
+    };
+
 
     const getRoomById = async (id) => {
       try {
@@ -26,6 +46,11 @@ const RoomPage = () => {
         const data = result.data;
         setRoom(data);
         console.log(data)
+        getImage(data.inventory.imageUrl)
+        .then(url => setImage(url))
+        .catch(error => {
+          console.log(error)
+        })
       }
       catch (error) {
         console.log(error)
@@ -36,10 +61,12 @@ const RoomPage = () => {
   
     useEffect(() =>{
 
-      getDownloadURL(imageListRef).then((url) => {
-        setImageList(url)
-        //console.log(imageList)
-      })
+      // getDownloadURL(imageListRef).then((url) => {
+      //   setImageList(url)
+      //   //console.log(imageList)
+      // })
+
+
       // listAll(imageListRef).then((response) => {
       //   response.items.forEach((item) =>{
       //     getDownloadURL(item).then((url) => {
@@ -47,22 +74,28 @@ const RoomPage = () => {
       //     })
       //   })
       // })
-       
+     
+     
       getRoomById(id);
-    },[id])
+      getAllInventories();
+      
+    },[id,image])
 
 
     const boss = room.worker;
     const roomInventory = inventory.find(item => item.roomId == id);
-    if (!roomInventory || !boss) {
+    if (!boss || !roomInventory) {
           getRoomById(id);
         return <div>Loading...</div>;
       }
 
+      
       return (
            <div className="room-details">
 
-            <img style={{width:300 , height:100}} src={imageList} />
+            {image && (
+            <img style={{width:300 , height:100}} src={image} alt="Image not Found" />
+            )}
 
             <h1>ID SOBE:{id}</h1>
             <div>
@@ -76,12 +109,13 @@ const RoomPage = () => {
             <br />
             <h1>Inventar</h1>
             <div>
-              <h1>Name: {room.inventory.name}</h1>
-              <h1>Serial Number: {room.inventory.serialNumber}</h1>
-              <h1>Mark: {room.inventory.mark}</h1>
-              <h1>Model: {room.inventory.model}</h1>
-              <h1>Quantity: {room.inventory.quantity}</h1>
-              <h1>Price: {room.inventory.price}</h1>
+              <h1>Name: {roomInventory.name}</h1>
+              <h1>Image: {roomInventory.imageUrl}</h1>
+              <h1>Serial Number: {roomInventory.serialNumber}</h1>
+              <h1>Mark: {roomInventory.mark}</h1>
+              <h1>Model: {roomInventory.model}</h1>
+              <h1>Quantity: {roomInventory.quantity}</h1>
+              <h1>Price: {roomInventory.price}</h1>
             </div>
             <br />
             <h1>Worker</h1>
@@ -94,9 +128,6 @@ const RoomPage = () => {
             </div>
 
             <button onClick={printInventoryDocumentation}>Print Document</button>
-            {/* {imageList.map((url) => {
-          return <img style={{width:300 , height:100}} src={url} />
-        })} */}
 
 </div>
         )
