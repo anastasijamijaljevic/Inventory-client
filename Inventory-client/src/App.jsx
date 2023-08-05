@@ -12,6 +12,7 @@ import RegistrationForm from './pages/Register/RegistrationForm'
 import LoginForm from './pages/Login/LoginForm'
 import Error404 from './pages/Error404/error404'
 import RoomPage from './pages/Room/RoomPage'
+import HowItWorks from './pages/HowItWorks/HowItWorks'
 
 
 function App() {
@@ -248,7 +249,9 @@ function App() {
         <Route path='/register' element={<RegistrationForm />} />
         <Route path='*' element={<Error404 />} />
         <Route path="/room/:id" element={<RoomPage/>} />
+        <Route path='/howitworks' element={<HowItWorks/>} />
       </Routes>
+
 
 
 

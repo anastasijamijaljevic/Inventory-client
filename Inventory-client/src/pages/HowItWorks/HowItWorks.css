@@ -1,0 +1,106 @@
+section {
+    margin: 0;
+    padding: 0;
+    background-image: url(https://png.pngtree.com/thumb_back/fh260/background/20201012/pngtree-grey-and-white-clouds-background-image_413281.jpg); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  
+
+  
+  .how-it-works {
+    padding: 4rem 2rem; 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .how-it-works h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+
+  
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin: 1rem; 
+    width: calc(33.33% - 2rem); 
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, font-size 0.3s ease;
+  cursor: pointer; 
+  }
+
+  .card:hover {
+    transform: scale(1.05); 
+    background-color: #f0f0f0; 
+    color: #1c2541; 
+    font-size: 1.1rem; 
+  }
+  
+  .card h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    transition: font-size 0.3s ease;
+    background-color: white;
+  }
+  
+  .card p {
+    font-size: 1rem;
+    color: #333;
+    background-color: white;
+    transition: color 0.3s ease;
+  }
+
+  .card h2  {
+    background-color: white;
+    transition: color 0.3s ease;
+  }
+  
+
+  
+  .get-started-button {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
+  
+  .button {
+    display: inline-block;
+    background-color: #1c2541;
+    color: white;
+    padding: 0.6rem 1.2rem; 
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  .button:hover {
+    background-color: #0e1422;
+  }
+  
+
+  
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+
+  
+  .card {
+    animation: fadeInUp 1.5s ease-out;
+  }
+  
