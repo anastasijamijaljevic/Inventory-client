@@ -50,8 +50,20 @@ const Rooms = () => {
       const response = await api.post('/api/Room', createdRoom);
       console.log('User created successfully:', response.data);
       // Do something with the response if needed
+      getAllRooms();
     } catch (error) {
       console.error('Error creating user:', error);
+    }
+  };
+
+  const getAllRooms = async () => {
+    try {
+      const result = await api.get('/api/Room');
+      const data = result.data;
+      setRooms(data);
+      //console.log(data);
+    } catch (error) {
+      console.log('Error fetching rooms:', error);
     }
   };
 
@@ -78,21 +90,9 @@ const Rooms = () => {
     //   })
     // })
 
-    
-    const getAllRooms = async () => {
-      try {
-        const result = await api.get('/api/Room');
-        const data = result.data;
-        setRooms(data);
-        //console.log(data);
-      } catch (error) {
-        console.log('Error fetching rooms:', error);
-      }
-    };
-
     getAllRooms();
 
-  }, [createRoom]);
+  }, []);
 
   
 
