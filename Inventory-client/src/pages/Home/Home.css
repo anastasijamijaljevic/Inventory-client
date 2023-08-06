@@ -10,57 +10,7 @@
     background-repeat: no-repeat;
   }
   
-  .navbar {
-    padding: 1rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex; 
-    justify-content: space-between; 
-    border-bottom: none; 
-  }
   
-  .nav-logo {
-    width: 40px;
-    height: 40px;
-    background-image: url(https://www.shutterstock.com/shutterstock/photos/2069972330/display_1500/stock-vector-vector-illustration-of-three-box-packages-icon-in-dark-color-and-transparent-background-png-2069972330.jpg);
-    background-size: cover;
-  }
- 
-  
-  .nav-right {
-    display: flex; 
-  }
-  
-  .nav-list {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-list li {
-    margin-right: 1rem;
-    margin-top: 10px;
-  }
-  
-  .nav-list li:last-child {
-    margin-right: 10px;
-  }
-  
-  .nav-list li .nav-link {
-    text-decoration: none;
-    color: #333;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-  }
-  
-  .nav-list li .nav-link:hover {
-    background-color: #1c2541;
-    color: #fff;
-  }
   
 .left-section {
     background-color: #f1f1f1;
