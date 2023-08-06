@@ -20,7 +20,7 @@ section {
     margin-bottom: 1rem;
   }
   
-  .card 
+  .how-it-works-card 
    {
     background-color: white;
     border-radius: 8px;
@@ -32,7 +32,7 @@ section {
     cursor: pointer; 
   }
 
-  .card:hover {
+  .how-it-works-card:hover {
     transform: scale(1.05);
     color: #1c2541;
     font-size: 1.1rem; 
@@ -41,7 +41,7 @@ section {
     box-shadow: 0 4px 8px rgba(28, 37, 65, 0.2); 
   }
   
-  .card h3 {
+  .how-it-works-card h3 {
     font-size: 1.5rem;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
@@ -50,7 +50,7 @@ section {
 
   }
 
-  .card p {
+  .how-it-works-card p {
     font-size: 1rem;
     color: #333;
     background-color: white;
@@ -59,19 +59,19 @@ section {
   }
 
  
-  .card h2  {
+  .how-it-works-card h2  {
     background-color: white;
     transition: color 0.3s ease;
 
   }
   
-  .get-started-button {
+  .how-it-works-get-started-button {
     text-align: center;
     margin-top: 2rem;
     margin-bottom: 4rem;
   }
   
-  .button {
+  .button-how-it-works {
     display: inline-block;
     background-color: #1c2541;
     color: white;
@@ -83,7 +83,7 @@ section {
    
   }
   
-  .button:hover {
+  .button-how-it-works:hover {
     background-color: #0e1422;
     border: 1px solid #0e1422;
   }
@@ -101,7 +101,7 @@ section {
     }
   }
    
-  .card {
+  .how-it-works-card {
     animation: fadeInUp 1.5s ease-out;
   }
  
