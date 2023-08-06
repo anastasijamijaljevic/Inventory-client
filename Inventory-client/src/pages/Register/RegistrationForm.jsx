@@ -1,5 +1,6 @@
 import './RegistrationForm.css'
 import React, { useState } from 'react';
+import Navbar from '../../components/Navbar/Navbar';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
@@ -79,6 +80,8 @@ const RegistrationForm = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="username">Username:</label>
@@ -132,6 +135,7 @@ const RegistrationForm = () => {
       </div>
       <button type="submit">Sign Up</button>
     </form>
+    </>
   );
 };
 

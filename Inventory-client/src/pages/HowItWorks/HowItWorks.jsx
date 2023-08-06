@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom'
 import './HowItWorks.css'
+import Navbar from '../../components/Navbar/Navbar'
 
 
 
 
 const HowItWorks = () => {
     return (
+      <>
+      <Navbar/>
 <section className="how-it-works">
   <div className="card animate__animated animate__fadeInUp">
     <h2 className="card-title">How It Works</h2>
@@ -32,6 +35,7 @@ const HowItWorks = () => {
     </div>
   </div>
 </section>
+</>
 
     )
 }

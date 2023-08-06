@@ -8,6 +8,7 @@ import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 import { printInventoryDocumentation } from "../Documentation/printButton";
 import { useNavigate } from 'react-router-dom';
+import Navbar from "../../components/Navbar/Navbar";
 
 const RoomPage = () => {
     const { id } = useParams();
@@ -156,6 +157,8 @@ const RoomPage = () => {
 
       
       return (
+        <>
+        <Navbar/>
            <div className="room-details">
             <h1>ID SOBE:{id}</h1>
             <div>
@@ -234,6 +237,7 @@ const RoomPage = () => {
             <button onClick={printInventoryDocumentation}>Print Document</button>
 
 </div>
+</>
         )
         
 

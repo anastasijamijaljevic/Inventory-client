@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom'
 import CreateRoom from '../../components/CreateRoom'
 import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
+import Navbar from '../../components/Navbar/Navbar'
 
 
 
@@ -100,6 +101,7 @@ const Rooms = () => {
 
   return (
     <>
+    <Navbar/>
     <div className="room-list-container">
       <h1>Rooms</h1>
       <ul className="room-list">

@@ -1,8 +1,10 @@
 import style from './aboutUs.module.css'
 import { Link } from 'react-router-dom';
+import Navbar from '../../components/Navbar/Navbar';
 
 const AboutUs = () =>{
     return <>
+    <Navbar/>
     <div className={style.container}>
         <div className={style.hero}>
                 <div className={style.rows}>
