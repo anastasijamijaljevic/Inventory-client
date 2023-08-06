@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 import { useState } from "react";
 import { useEffect } from "react";
@@ -6,27 +7,77 @@ import api from '../../api/api'
 import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 import { printInventoryDocumentation } from "../Documentation/printButton";
+import { useNavigate } from 'react-router-dom';
 
 const RoomPage = () => {
     const { id } = useParams();
     const [room, setRoom] = useState([]);
     const [inventory,setInventory] = useState([])
     const [image , setImage] = useState([]);
+    const [workers, setWorkers] = useState([])
+    const [worker , setWorker] = useState([])
+    const [workerId, setWorkerId] = useState({
+      workerId:'a4625e35-1846-46b9-b7bb-fc21b032573e'
+    })
+    const navigate = useNavigate();
+    const [createdInventory, setCreatedInventory] = useState({
+      Name: '',
+      SerialNumber: 0,
+      Mark: '',
+      Model: '',
+      Quantity: 0,
+      Price: 0,
+      ImageUrl: 'kelly-sikkema-tk9RQCq5eQo-unsplash.jpg',
+      RoomId: `${id}`
+    })
 
+    
 
-
-    const getAllInventories = async () => {
+    const getAllWorkers = async () => {
       try {
-        const result = await api.get("/api/Inventory");
+        const result = await api.get("/api/Worker");
         const data = result.data;
-        setInventory(data);
-
+        setWorkers(data);
         console.log(data)
       }
       catch (error) {
         console.log(error)
       }
     }
+
+    const UpdateWorker = async (roomId) => {
+      try {
+        const response = await api.put(`/api/Room/${roomId}/worker`, workerId, {
+          headers: {
+            'Content-Type' : 'application/json'
+          },
+        });
+        console.log('Boss added successfully:', response.data);
+        getRoomById(id); // Refresh the list of users after update
+      } catch (error) {
+        console.error('Error adding Boss:', error);
+      }
+    };
+
+    const createInventory = async () => {
+      try {
+        const response = await api.post('/api/Inventory', createdInventory);
+        console.log('Inventory created successfully:', response.data);
+        getRoomById(id);
+      } catch (error) {
+        console.error('Error creating Inventory:', error);
+      }
+    };
+
+    const deleteInventory = async (inventory_id) => {
+      try {
+        await api.delete(`/api/Inventory/${inventory_id}`);
+        console.log('Inventory deleted successfully');
+        getRoomById(id);
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    };
 
     const getImage = async (imageName) => {
       const imageRef = ref(storage,`images/${imageName}`);
@@ -45,12 +96,8 @@ const RoomPage = () => {
         const result = await api.get(`/api/Room/${id}`);
         const data = result.data;
         setRoom(data);
-        console.log(data)
-        // getImage(data.inventory.imageUrl)
-        // .then(url => setImage(url))
-        // .catch(error => {
-        //   console.log(error)
-        // })
+        setInventory(data.inventory)
+        setWorker(data.worker)
         const imageUrls = await Promise.all(data.inventory.map(async item => {
           try {
             const imageUrl = await getImage(item.imageUrl);
@@ -68,16 +115,25 @@ const RoomPage = () => {
       }
     }
 
-   
+    const deleteRoom = async (id) => {
+      try {
+        const confirmDelete = window.confirm('Are you sure you want to delete this room?');
+        if (confirmDelete) {
+      await api.delete(`/api/Room/${id}`);
+      console.log('Room deleted successfully');
+      alert('Room Deleted Successfully');
+      navigate('/rooms');
+      }
+     } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    };
   
     useEffect(() =>{
-
-
       // getDownloadURL(imageListRef).then((url) => {
       //   setImageList(url)
       //   //console.log(imageList)
       // })
-
 
       // listAll(imageListRef).then((response) => {
       //   response.items.forEach((item) =>{
@@ -85,31 +141,22 @@ const RoomPage = () => {
       //       setImageList((prev) => [...prev, url])
       //     })
       //   })
-      // })
-     
-     
+      // }) 
       getRoomById(id);
-      getAllInventories();
+      getAllWorkers();
       
-    },[id])
+    },[id,createdInventory])
 
 
-    const boss = room.worker;
-    const roomInventory = inventory.find(item => item.roomId == id);
-    console.log(roomInventory)
-    if (!boss || !roomInventory) {
-          getRoomById(id);
-        return <div>Loading...</div>;
-      }
+    // const boss = room.worker;
+    // if (!boss) {
+    //       getRoomById(id);
+    //     return <div>Loading...</div>;
+    //   }
 
       
       return (
            <div className="room-details">
-
-            {/* {image && (
-            <img style={{width:300 , height:100}} src={image} alt="Image not Found" />
-            )} */}
-
             <h1>ID SOBE:{id}</h1>
             <div>
               <h1>Name:{room.name}</h1>
@@ -120,10 +167,8 @@ const RoomPage = () => {
               <h1>Boss:{room.boss}</h1>
             </div>
             <br />
-            <h1>Inventar</h1>       
-            {/*KADA SE BUDE RADIO CSS POSTO CE SE SLIKE OVDE UCITAVATI ONDA NEKA CELI DEO ZA INVENTAR BUDE UNUTAR OVE MAP FUNKCIJE
-            ZBOG SLIKA, OSTALO MOZE DA BUDE VAN*/}
-            {image.map((imageUrl, index) => (
+            <h1>Inventory:</h1>            
+            {/* {image.map((imageUrl, index) => (
               <div key={index}>
                 <img  style={{width:300 , height:100}} src={imageUrl} alt={`Image ${index}`} />
                 <h1>Name: {room.inventory[index].name}</h1>
@@ -133,17 +178,58 @@ const RoomPage = () => {
                 <h1>Model: {room.inventory[index].model}</h1>
                 <h1>Quantity: {room.inventory[index].quantity}</h1>
                 <h1>Price: {room.inventory[index].price}</h1>
+
+                <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
+              </div>                      
+                    ))} */}
+
+
+                    {/*KADA SE BUDE RADIO CSS POSTO CE SE SLIKE OVDE UCITAVATI ONDA NEKA CELI DEO ZA INVENTAR BUDE UNUTAR OVE MAP FUNKCIJE
+            ZBOG SLIKA, OSTALO MOZE DA BUDE VAN*/}
+                {inventory.map((item, index) => (
+              <div key={index}>
+                <img  style={{width:300 , height:100}} src={image[index]} alt={`Image ${index}`} />
+                <h1>Name: {item.name}</h1>
+                <h1>Image: {item.imageUrl}</h1>
+                <h1>Serial Number: {item.serialNumber}</h1>
+                <h1>Mark: {item.mark}</h1>
+                <h1>Model: {item.model}</h1>
+                <h1>Quantity: {item.quantity}</h1>
+                <h1>Price: {item.price}</h1>
+
+                <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
               </div>                      
                     ))}
+                     <button onClick={() => createInventory()}>Add Inventory</button>
+                      <button onClick={() => deleteRoom(room.id)}>Delete Room</button>
             <br />
-            <h1>Worker</h1>
-            <div>
-              <h1>Name: {room.worker.name}</h1>
-              <h1>Surname: {room.worker.surname}</h1>
-              <h1>Gender: {room.worker.gender}</h1>
-              <h1>Personalnumber: {room.worker.personalNumber}</h1>
-              <h1>Qualification: {room.worker.qualification}</h1>
+            <h1>Boss:</h1>
+
+            {worker && (
+                <div>
+                <h1>Name: {worker.name}</h1>
+                <h1>Surname: {worker.surname}</h1>
+                <h1>Gender: {worker.gender}</h1>
+                <h1>Personalnumber: {worker.personalNumber}</h1>
+                <h1>Qualification: {worker.qualification}</h1>
+              </div>
+            )}
+          
+
+          <h1>Available Workers:</h1>
+              {workers.map((workerItem) => (
+            <div key={workerItem.id}>
+                <h1>Name: {workerItem.name}</h1>
+                <h1>Surname: {workerItem.surname}</h1>
+                <h1>Gender: {workerItem.gender}</h1>
+                <h1>Personalnumber: {workerItem.personalNumber}</h1>
+                <h1>Qualification: {workerItem.qualification}</h1>
             </div>
+              ))}
+
+
+            <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
+            {/* <button onClick={() => setWorker(workers[0])}>Add Boss</button> */}
 
             <button onClick={printInventoryDocumentation}>Print Document</button>
 

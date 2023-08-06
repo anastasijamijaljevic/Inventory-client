@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -16,12 +17,55 @@ const Rooms = () => {
   const [rooms, setRooms] = useState([]);
 
 
-  
-  
- 
+  // Koristi ovo da bi unela podatke stim sto ces koristiti unete podatke umesto '' i 0 (sve osim ImageUrl, to ce morati na poseban nacin da se radi)
+  const [createdRoom, setCreatedRoom] = useState({
+    Name: '',
+    Floor: 0,
+    Width: 0,
+    Length: 0,
+    Height: 0,
+    Boss: '',
+    Inventory: [{
+      Name: '',
+      SerialNumber: 0,
+      Mark: '',
+      Model: '',
+      Quantity: 0,
+      Price: 0,
+      ImageUrl: "kelly-sikkema-tk9RQCq5eQo-unsplash.jpg",
+      RoomId: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    }],
+    Worker: {
+      PersonalNumber: '',
+      Name: '',
+      Surname: '',
+      Gender: 0,
+      Qualification: '',
+    }
+  })
 
 
+  const createRoom = async () => {
+    try {
+      const response = await api.post('/api/Room', createdRoom);
+      console.log('User created successfully:', response.data);
+      // Do something with the response if needed
+      getAllRooms();
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
 
+  const getAllRooms = async () => {
+    try {
+      const result = await api.get('/api/Room');
+      const data = result.data;
+      setRooms(data);
+      //console.log(data);
+    } catch (error) {
+      console.log('Error fetching rooms:', error);
+    }
+  };
 
   // const [imageList,setImageList] = useState([])
   // const [imageUpload,setImageUpload] = useState(null)
@@ -45,18 +89,6 @@ const Rooms = () => {
     //     })
     //   })
     // })
-
-    
-    const getAllRooms = async () => {
-      try {
-        const result = await api.get('/api/Room');
-        const data = result.data;
-        setRooms(data);
-        //console.log(data);
-      } catch (error) {
-        console.log('Error fetching rooms:', error);
-      }
-    };
 
     getAllRooms();
 
@@ -90,6 +122,11 @@ const Rooms = () => {
           </Link>
         ))}
       </ul>
+
+
+      <div>
+        <button onClick={createRoom}>Add Room</button>
+      </div>
 
       {/* <div>
         <input 
