@@ -49,13 +49,13 @@ const AboutUs = () =>{
             <div className={style.membersDiv}>
                 <div className={style.page}>
                     <div className={style.image}></div>
-                    <h3 className={style.memberName}>Daniel Osaka</h3>
-                    <p className={style.memberDesc}>Inventory Maestro</p>
+                    <h3 className={style.memberName}>Ertan Muslić</h3>
+                    <p className={style.memberDesc}>Third year software engineering student. Programming is my way to solve challenges and bring change. Besides computers, I like sports and football. Our application is the result of our creativity and teamwork, and it is just the beginning of our journey towards professional development.</p>
                 </div>
                 <div className={style.page2}>
                     <div className={style.image}></div>
-                    <h3 className={style.memberName}>Daniel Osaka</h3>
-                    <p className={style.memberDesc}>Inventory Maestro</p>
+                    <h3 className={style.memberName}>Anastasija Mijaljević</h3>
+                    <p className={style.memberDesc}>Third-year software engineering student. Our joint application is the result of our hard work and dedication. Besides coding, I enjoy traveling and photography. This app is just one step in our journey to create innovative solutions.</p>
                 </div>
             </div>
         </div>
