@@ -11,7 +11,7 @@ const RoomPage = () => {
     const { id } = useParams();
     const [room, setRoom] = useState([]);
     const [inventory,setInventory] = useState([])
-    const [image , setImage] = useState('');
+    const [image , setImage] = useState([]);
 
 
 
@@ -46,11 +46,22 @@ const RoomPage = () => {
         const data = result.data;
         setRoom(data);
         console.log(data)
-        getImage(data.inventory.imageUrl)
-        .then(url => setImage(url))
-        .catch(error => {
-          console.log(error)
-        })
+        // getImage(data.inventory.imageUrl)
+        // .then(url => setImage(url))
+        // .catch(error => {
+        //   console.log(error)
+        // })
+        const imageUrls = await Promise.all(data.inventory.map(async item => {
+          try {
+            const imageUrl = await getImage(item.imageUrl);
+            return imageUrl;
+          } catch (error) {
+            console.log(error);
+            return null;
+          }
+        }));
+
+        setImage(imageUrls.filter(url => url !== null));
       }
       catch (error) {
         console.log(error)
@@ -80,11 +91,12 @@ const RoomPage = () => {
       getRoomById(id);
       getAllInventories();
       
-    },[id,image])
+    },[id])
 
 
     const boss = room.worker;
     const roomInventory = inventory.find(item => item.roomId == id);
+    console.log(roomInventory)
     if (!boss || !roomInventory) {
           getRoomById(id);
         return <div>Loading...</div>;
@@ -94,10 +106,9 @@ const RoomPage = () => {
       return (
            <div className="room-details">
 
-
-            {image && (
+            {/* {image && (
             <img style={{width:300 , height:100}} src={image} alt="Image not Found" />
-            )}
+            )} */}
 
             <h1>ID SOBE:{id}</h1>
             <div>
@@ -109,16 +120,21 @@ const RoomPage = () => {
               <h1>Boss:{room.boss}</h1>
             </div>
             <br />
-            <h1>Inventar</h1>
-            <div>
-              <h1>Name: {roomInventory.name}</h1>
-              <h1>Image: {roomInventory.imageUrl}</h1>
-              <h1>Serial Number: {roomInventory.serialNumber}</h1>
-              <h1>Mark: {roomInventory.mark}</h1>
-              <h1>Model: {roomInventory.model}</h1>
-              <h1>Quantity: {roomInventory.quantity}</h1>
-              <h1>Price: {roomInventory.price}</h1>
-            </div>
+            <h1>Inventar</h1>       
+            {/*KADA SE BUDE RADIO CSS POSTO CE SE SLIKE OVDE UCITAVATI ONDA NEKA CELI DEO ZA INVENTAR BUDE UNUTAR OVE MAP FUNKCIJE
+            ZBOG SLIKA, OSTALO MOZE DA BUDE VAN*/}
+            {image.map((imageUrl, index) => (
+              <div key={index}>
+                <img  style={{width:300 , height:100}} src={imageUrl} alt={`Image ${index}`} />
+                <h1>Name: {room.inventory[index].name}</h1>
+                <h1>Image: {room.inventory[index].imageUrl}</h1>
+                <h1>Serial Number: {room.inventory[index].serialNumber}</h1>
+                <h1>Mark: {room.inventory[index].mark}</h1>
+                <h1>Model: {room.inventory[index].model}</h1>
+                <h1>Quantity: {room.inventory[index].quantity}</h1>
+                <h1>Price: {room.inventory[index].price}</h1>
+              </div>                      
+                    ))}
             <br />
             <h1>Worker</h1>
             <div>
