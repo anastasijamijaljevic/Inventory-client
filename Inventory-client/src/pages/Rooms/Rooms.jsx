@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-key */
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -45,7 +46,6 @@ const Rooms = () => {
 
 
   const createRoom = async () => {
-    // e.preventDefault();
     try {
       const response = await api.post('/api/Room', createdRoom);
       console.log('User created successfully:', response.data);
@@ -54,13 +54,6 @@ const Rooms = () => {
       console.error('Error creating user:', error);
     }
   };
-
-  
-  
- 
-
-
-
 
   // const [imageList,setImageList] = useState([])
   // const [imageUpload,setImageUpload] = useState(null)
@@ -99,7 +92,7 @@ const Rooms = () => {
 
     getAllRooms();
 
-  }, []);
+  }, [createRoom]);
 
   
 
