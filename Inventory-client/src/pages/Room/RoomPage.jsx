@@ -15,7 +15,10 @@ const RoomPage = () => {
     const [inventory,setInventory] = useState([])
     const [image , setImage] = useState([]);
     const [workers, setWorkers] = useState([])
-    const [worker, setWorker] = useState([])
+    const [worker , setWorker] = useState([])
+    const [workerId, setWorkerId] = useState({
+      workerId:'a4625e35-1846-46b9-b7bb-fc21b032573e'
+    })
     const navigate = useNavigate();
     const [createdInventory, setCreatedInventory] = useState({
       Name: '',
@@ -42,13 +45,27 @@ const RoomPage = () => {
       }
     }
 
+    const UpdateWorker = async (roomId) => {
+      try {
+        const response = await api.put(`/api/Room/${roomId}/worker`, workerId, {
+          headers: {
+            'Content-Type' : 'application/json'
+          },
+        });
+        console.log('Boss added successfully:', response.data);
+        getRoomById(id); // Refresh the list of users after update
+      } catch (error) {
+        console.error('Error adding Boss:', error);
+      }
+    };
+
     const createInventory = async () => {
       try {
         const response = await api.post('/api/Inventory', createdInventory);
-        console.log('User created successfully:', response.data);
+        console.log('Inventory created successfully:', response.data);
         getRoomById(id);
       } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error creating Inventory:', error);
       }
     };
 
@@ -211,8 +228,8 @@ const RoomPage = () => {
               ))}
 
 
-
-            <button onClick={() => setWorker(workers[0])}>Add Boss</button>
+            <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
+            {/* <button onClick={() => setWorker(workers[0])}>Add Boss</button> */}
 
             <button onClick={printInventoryDocumentation}>Print Document</button>
 
