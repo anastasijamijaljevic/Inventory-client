@@ -16,6 +16,45 @@ const Rooms = () => {
   const [rooms, setRooms] = useState([]);
 
 
+  // Koristi ovo da bi unela podatke stim sto ces koristiti unete podatke umesto '' i 0 (sve osim ImageUrl, to ce morati na poseban nacin da se radi)
+  const [createdRoom, setCreatedRoom] = useState({
+    Name: '',
+    Floor: 0,
+    Width: 0,
+    Length: 0,
+    Height: 0,
+    Boss: '',
+    Inventory: [{
+      Name: '',
+      SerialNumber: 0,
+      Mark: '',
+      Model: '',
+      Quantity: 0,
+      Price: 0,
+      ImageUrl: "kelly-sikkema-tk9RQCq5eQo-unsplash.jpg",
+      RoomId: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    }],
+    Worker: {
+      PersonalNumber: '',
+      Name: '',
+      Surname: '',
+      Gender: 0,
+      Qualification: '',
+    }
+  })
+
+
+  const createRoom = async () => {
+    // e.preventDefault();
+    try {
+      const response = await api.post('/api/Room', createdRoom);
+      console.log('User created successfully:', response.data);
+      // Do something with the response if needed
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
+  };
+
   
   
  
@@ -90,6 +129,11 @@ const Rooms = () => {
           </Link>
         ))}
       </ul>
+
+
+      <div>
+        <button onClick={createRoom}>Add Room</button>
+      </div>
 
       {/* <div>
         <input 

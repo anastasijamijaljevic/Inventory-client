@@ -14,6 +14,16 @@ const RoomPage = () => {
     const [image , setImage] = useState([]);
 
 
+    const deleteInventory = async (id) => {
+      try {
+        await api.delete(`/api/Inventory/${id}`);
+        console.log('User deleted successfully');
+        getAllInventories(); // Refresh the list of users after deletion
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    };
 
     const getAllInventories = async () => {
       try {
@@ -95,9 +105,9 @@ const RoomPage = () => {
 
 
     const boss = room.worker;
-    const roomInventory = inventory.find(item => item.roomId == id);
-    console.log(roomInventory)
-    if (!boss || !roomInventory) {
+    //const roomInventory = inventory.find(item => item.roomId == id);
+    //console.log(roomInventory)
+    if (!boss) {
           getRoomById(id);
         return <div>Loading...</div>;
       }
@@ -133,6 +143,8 @@ const RoomPage = () => {
                 <h1>Model: {room.inventory[index].model}</h1>
                 <h1>Quantity: {room.inventory[index].quantity}</h1>
                 <h1>Price: {room.inventory[index].price}</h1>
+
+                <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
               </div>                      
                     ))}
             <br />
