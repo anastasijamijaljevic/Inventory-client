@@ -4,7 +4,6 @@ import './HowItWorks.css'
 
 
 
-
 const HowItWorks = () => {
     return (
 <section className="how-it-works">
