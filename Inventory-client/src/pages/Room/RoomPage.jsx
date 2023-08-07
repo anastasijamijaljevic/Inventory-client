@@ -271,7 +271,7 @@ const RoomPage = () => {
 
 {showInventoryForm && (
   <div>
-    <h2>Dodaj Inventar</h2>
+   
     <form onSubmit={handleInventoryFormSubmit}>
       <label htmlFor="name">Name:</label>
       <input
