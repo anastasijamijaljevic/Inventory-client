@@ -2,6 +2,7 @@
 import './Home.css'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
+import { Link } from 'react-router-dom'
 
 
 const Home = () => {
@@ -13,7 +14,7 @@ const Home = () => {
             <div className="left-section">
         <h1>Debt Inventory</h1>
         <p>A simple and effective way to manage your inventory.</p>
-        <button className="get-started-btn">Get Started</button>
+       <Link to = '/howitworks'  className="get-started-btn">Get Started</Link>
       </div>
       
         </section>
