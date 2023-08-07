@@ -35,6 +35,7 @@ const HowItWorks = () => {
     </div>
   </div>
 </section>
+<Footer/>
 </>
 
     )

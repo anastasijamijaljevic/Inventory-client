@@ -245,7 +245,7 @@ const Rooms = () => {
       </div> */}
     </div>
    
-  
+  <Footer/>
 
 </>
   )
