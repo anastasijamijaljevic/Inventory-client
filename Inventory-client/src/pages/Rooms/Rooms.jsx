@@ -16,6 +16,7 @@ import Navbar from '../../components/Navbar/Navbar'
 const Rooms = () => {
   const { id } = useParams();
   const [rooms, setRooms] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
 
   // Koristi ovo da bi unela podatke stim sto ces koristiti unete podatke umesto '' i 0 (sve osim ImageUrl, to ce morati na poseban nacin da se radi)
@@ -44,6 +45,67 @@ const Rooms = () => {
       Qualification: '',
     }
   })
+
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setCreatedRoom((prevRoom) => ({
+      ...prevRoom,
+      [name]: value,
+    }));
+  }
+
+  const handleAddInventory = () => {
+    setCreatedRoom((prevRoom) => ({
+      ...prevRoom,
+      Inventory: [
+        ...prevRoom.Inventory,
+        {
+          Name: '',
+          SerialNumber: 0,
+          Mark: '',
+          Model: '',
+          Quantity: 0,
+          Price: 0,
+          ImageUrl: '',
+          RoomId: id, 
+        },
+      ],
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await createRoom();
+    setShowForm(false);
+    setCreatedRoom({
+      ...createdRoom,
+      Name: '',
+      Floor: 0,
+      Boss: '',
+      Inventory: [
+        {
+          Name: '',
+          SerialNumber: 0,
+          Mark: '',
+          Model: '',
+          Quantity: 0,
+          Price: 0,
+          ImageUrl: '',
+          RoomId: id,
+        },
+      ],
+    });
+  };
+
+  const handleInventoryChange = (event, index) => {
+    const { name, value } = event.target;
+    const updatedInventory = [...createdRoom.Inventory];
+    updatedInventory[index][name] = value;
+    setCreatedRoom((prevRoom) => ({
+      ...prevRoom,
+      Inventory: updatedInventory,
+    }));
+  };
 
 
   const createRoom = async () => {
@@ -125,10 +187,48 @@ const Rooms = () => {
         ))}
       </ul>
 
+      <div>
+      { /* <button onClick={handleAddInventory}>Add Inventory Item</button>*/}
 
       <div>
-        <button onClick={createRoom}>Add Room</button>
+          <button onClick={() => setShowForm(!showForm)}>Add Room</button>
+        </div>
       </div>
+      {showForm && (
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Floor"
+          name="Floor"
+          value={createdRoom.Floor}
+          onChange={handleFormChange}
+        />
+       <input
+       type="text"
+       placeholder="Boss"
+       name="Boss"
+       value={createdRoom.Boss}
+      onChange={handleFormChange}  
+      />
+        {createdRoom.Inventory.map((item, index) => (
+          <div key={index}>
+            <h3>Inventory Item {index + 1}</h3>
+            <input
+              type="text"
+              placeholder="Item Name"
+              name="Name"
+              value={item.Name}
+              onChange={(event) => handleInventoryChange(event, index)}
+            />
+          </div>
+        ))}
+       <button onClick={() => setShowForm(true)}>Add Room</button>
+      </form>
+      )}
+
+
+
+     
 
       {/* <div>
         <input 
