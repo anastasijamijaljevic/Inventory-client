@@ -17,6 +17,7 @@ const RoomPage = () => {
   const [image, setImage] = useState([]);
   const [workers, setWorkers] = useState([])
   const [worker, setWorker] = useState([])
+  const [showInventoryForm, setShowInventoryForm] = useState(false);
   const [workerId, setWorkerId] = useState({
     workerId: 'a4625e35-1846-46b9-b7bb-fc21b032573e'
   })
@@ -155,6 +156,31 @@ const RoomPage = () => {
   //     return <div>Loading...</div>;
   //   }
 
+  const handleInventoryFormSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      
+      await createInventory();
+      
+      
+      setCreatedInventory({
+        Name: '',
+        SerialNumber: 0,
+        Mark: '',
+        Model: '',
+        Quantity: 0,
+        Price: 0,
+        ImageUrl: 'kelly-sikkema-tk9RQCq5eQo-unsplash.jpg',
+        RoomId: `${id}`
+      });
+      
+     
+      setShowInventoryForm(false);
+    } catch (error) {
+      console.error('Error creating Inventory:', error);
+    }
+  };
 
   return (
     <>
@@ -203,7 +229,7 @@ const RoomPage = () => {
             <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
           </div>
         ))}
-        <button onClick={() => createInventory()}>Add Inventory</button>
+       <button onClick={() => setShowInventoryForm(true)}>Dodaj Inventar</button>
         <button onClick={() => deleteRoom(room.id)}>Delete Room</button>
         <br />
         <h1>Boss:</h1>
@@ -237,7 +263,75 @@ const RoomPage = () => {
         <button onClick={printInventoryDocumentation}>Print Document</button>
 
       </div>
-    </>
+
+      
+
+
+      <button onClick={() => setShowInventoryForm(true)}>Add Inventory</button>
+
+{showInventoryForm && (
+  <div>
+    <h2>Dodaj Inventar</h2>
+    <form onSubmit={handleInventoryFormSubmit}>
+      <label htmlFor="name">Name:</label>
+      <input
+        type="text"
+        id="name"
+        value={createdInventory.Name}
+        onChange={(e) =>
+          setCreatedInventory({ ...createdInventory, Name: e.target.value })
+        }
+      />
+      <label htmlFor="serialNumber">Serial Number:</label>
+      <input
+        type="number"
+        id="serialNumber"
+        value={createdInventory.SerialNumber}
+        onChange={(e) =>
+          setCreatedInventory({ ...createdInventory, SerialNumber: parseInt(e.target.value) })
+        }
+      />
+      <label htmlFor="mark">Mark:</label>
+      <input
+        type="text"
+        id="mark"
+        value={createdInventory.Mark}
+        onChange={(e) =>
+          setCreatedInventory({ ...createdInventory, Mark: e.target.value })
+        }
+      />
+      <label htmlFor="model">Model:</label>
+      <input
+        type="text"
+        id="model"
+        value={createdInventory.Model}
+        onChange={(e) =>
+          setCreatedInventory({ ...createdInventory, Model: e.target.value })
+        }
+      />
+      <label htmlFor="quantity">Quantity</label>
+      <input
+        type="number"
+        id="quantity"
+        value={createdInventory.Quantity}
+        onChange={(e) =>
+          setCreatedInventory({ ...createdInventory, Quantity: parseInt(e.target.value) })
+        }
+      />
+      <label htmlFor="price">Price:</label>
+      <input
+        type="number"
+        id="price"
+        value={createdInventory.Price}
+        onChange={(e) =>
+          setCreatedInventory({ ...createdInventory, Price: parseFloat(e.target.value) })
+        }
+      />
+      <button type="submit">Add Inventory</button>
+    </form>
+  </div>
+)}
+</>
   )
 
 
