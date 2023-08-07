@@ -1,10 +1,12 @@
 
 import './Home.css'
 import Navbar from '../../components/Navbar/Navbar'
+import Footer from '../../components/Footer/Footer'
 
 
 const Home = () => {
     return (
+      <>
         <section className='homepage'>
           <Navbar/>
            
@@ -16,7 +18,8 @@ const Home = () => {
       
         </section>
 
-       
+<Footer/>
+       </>
     )
 }
 

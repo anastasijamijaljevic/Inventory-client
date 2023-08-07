@@ -1,0 +1,27 @@
+
+.footer-container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .social-icons {
+    display: flex; 
+    justify-content: center; 
+    margin-bottom: 10px;
+  }
+  
+  .social-icons a {
+    color: #333;
+    font-size: 24px;
+    margin: 0 10px; 
+    transition: color 0.3s;
+  }
+  
+  .social-icons a:hover {
+    color: #007bff;
+  }
+  
+  .social-icons a.instagram:hover {
+    color: #E4405F; 
+  }
+  
