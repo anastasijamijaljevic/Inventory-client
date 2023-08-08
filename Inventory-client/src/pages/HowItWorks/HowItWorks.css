@@ -69,18 +69,18 @@ section {
     text-align: center;
     margin-top: 2rem;
     margin-bottom: 4rem;
+    
   }
   
-  .button-how-it-works {
+ .button-how-it-works {
     display: inline-block;
     background-color: #1c2541;
     color: white;
     padding: 0.6rem 1.2rem; 
     border-radius: 4px;
-    text-decoration: none;
     transition: background-color 0.3s ease;
-    font-size: 1rem;
-   
+    font-size: 1rem; 
+    text-decoration: none;
   }
   
   .button-how-it-works:hover {
@@ -105,5 +105,4 @@ section {
     animation: fadeInUp 1.5s ease-out;
   }
  
-
- 
+  

@@ -235,12 +235,11 @@ const RoomPage = () => {
           </div>
         ))}
 
-        <button onClick={() => setShowInventoryForm(true)}>Dodaj Inventar</button>
+       <button onClick={() => setShowInventoryForm(true)}>Add Inventory</button>
         <button onClick={() => deleteRoom(room.id)}>Delete Room</button>
-
         <br />
-
         <h1>Boss:</h1>
+
         {worker ? (
           <div>
             <h1>Name: {worker.name}</h1>

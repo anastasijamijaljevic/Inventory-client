@@ -2,7 +2,7 @@ import './RegistrationForm.css'
 import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ setIsRegistered }) => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -35,13 +35,12 @@ const RegistrationForm = () => {
     setFormErrors(newFormErrors);
 
     if (Object.values(newFormErrors).every((error) => error === '')) {
-      console.log(formData);
-      setFormData({
-        username: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      });
+      // Implementacija logike za uspesnu registraciju
+      console.log('Registration successful:', formData);
+      setIsRegistered(true); // Postavljanje statusa registrovanog korisnika
+
+      // Sačuvaj informaciju o registraciji u Local Storage
+      localStorage.setItem('isRegistered', true);
     }
   };
 

@@ -2,7 +2,7 @@ import './LoginForm.css'
 import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLoggedIn }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -33,9 +33,12 @@ const LoginForm = () => {
     setFormErrors(newFormErrors);
 
     if (Object.values(newFormErrors).every((error) => error === '')) {
-      // sa unapred definisanim korisnickim imenom i lozinkom
+      // sa unapred definisanim korisničkim imenom i lozinkom
       if (formData.username === 'test' && formData.password === 'test') {
-        setLoginMessage('Successful login!');
+        setIsLoggedIn(true); // Postavljanje ulogovanog statusa
+
+        // Sačuvaj informaciju o ulogovanosti u Local Storage
+        localStorage.setItem('isLoggedIn', true);
       } else {
         setLoginMessage('Login failed. Check your username and password.');
       }
@@ -44,7 +47,7 @@ const LoginForm = () => {
         password: '',
       });
     }
-  };
+  }
 
   const validateForm = (data) => {
     const errors = {};

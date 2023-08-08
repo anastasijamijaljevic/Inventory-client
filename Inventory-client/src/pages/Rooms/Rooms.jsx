@@ -11,6 +11,8 @@ import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
+import LoginForm from '../Login/LoginForm'
+import RegistrationForm from '../Register/RegistrationForm'
 
 
 
@@ -18,6 +20,12 @@ const Rooms = () => {
   const { id } = useParams();
   const [rooms, setRooms] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(
+    localStorage.getItem('isRegistered') === 'true'
+  );
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('isLoggedIn') === 'true'
+  );
 
 
   // Koristi ovo da bi unela podatke stim sto ces koristiti unete podatke umesto '' i 0 (sve osim ImageUrl, to ce morati na poseban nacin da se radi)
@@ -131,6 +139,17 @@ const Rooms = () => {
     }
   };
 
+  const handleRegistration = () => {
+    setIsRegistered(true);
+    setIsLoggedIn(true);
+    setShowForm(false);
+  };
+  const handleLogout = () => {
+    localStorage.removeItem('isRegistered');
+    localStorage.removeItem('isLoggedIn');
+    setIsRegistered(false);
+    setIsLoggedIn(false);
+  };
   // const [imageList,setImageList] = useState([])
   // const [imageUpload,setImageUpload] = useState(null)
   // const imageListRef = ref(storage, "images/")
@@ -180,23 +199,23 @@ const Rooms = () => {
               <div>
                 <strong>Boss:</strong> {room.boss}
               </div>
-              <div>
-                <strong>Inventory:</strong> {room.inventory.name}
-              </div>
+            
+                <div>
+                  <strong>Inventory:</strong> {room.inventory[0].Name}
+                </div>
+              
             </li>
           </Link>
         ))}
       </ul>
 
-      <div>
-      { /* <button onClick={handleAddInventory}>Add Inventory Item</button>*/}
-
-      <div>
-          <button onClick={() => setShowForm(!showForm)}>Add Room</button>
-        </div>
-      </div>
-      {showForm && (
+      {isRegistered ? (
+  <div>
+    <button onClick={() => setShowForm(!showForm)}>Add Room</button>
+    <button onClick={handleLogout}>Logout</button>
+    {showForm && (
       <form onSubmit={handleSubmit}>
+        <label htmlFor="Floor">Floor:</label>
         <input
           type="text"
           placeholder="Floor"
@@ -204,13 +223,15 @@ const Rooms = () => {
           value={createdRoom.Floor}
           onChange={handleFormChange}
         />
-       <input
-       type="text"
-       placeholder="Boss"
-       name="Boss"
-       value={createdRoom.Boss}
-      onChange={handleFormChange}  
-      />
+        <br />
+        <label htmlFor="Boss">Boss:</label>
+        <input
+          type="text"
+          placeholder="Boss"
+          name="Boss"
+          value={createdRoom.Boss}
+          onChange={handleFormChange}
+        />
         {createdRoom.Inventory.map((item, index) => (
           <div key={index}>
             <h3>Inventory Item {index + 1}</h3>
@@ -223,32 +244,18 @@ const Rooms = () => {
             />
           </div>
         ))}
-       <button onClick={() => setShowForm(true)}>Add Room</button>
+        <button type="submit">Add Room</button>
       </form>
-      )}
-
-
-
-     
-
-      {/* <div>
-        <input 
-        type="file" 
-        onChange={(e) => {
-          setImageUpload(e.target.files[0]);
-           }} />
-        <button onClick={uploadImage}>Upload Image</button>
-
-
-
-        
-        {imageList.map((url) => {
-          return <img style={{width:300 , height:100}} src={url} />
-        })}
-        
-      </div> */}
-    </div>
+    )}
+  </div>
+) : (
+  <div>
    
+    <RegistrationForm setIsRegistered={handleRegistration} />
+  </div>
+)}
+       
+      </div>
   <Footer/>
 
 </>
