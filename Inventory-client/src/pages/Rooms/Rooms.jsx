@@ -13,6 +13,7 @@ import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import LoginForm from '../Login/LoginForm'
 import RegistrationForm from '../Register/RegistrationForm'
+import { FaWarehouse } from 'react-icons/fa';
 
 
 
@@ -184,23 +185,27 @@ const Rooms = () => {
   return (
     <>
     <Navbar/>
+  
     <div className="room-list-container">
-      <h1>Rooms</h1>
+    
       <ul className="room-list">
         {rooms.map((room) => (
           <Link to={`../room/${room.id}`} key={room.id} className="room-link">
             <li className="room-item">
-              <div>
-                {room.name}
+            <div className="room-icon">
+              <FaWarehouse size={60} />
               </div>
-              <div>
+              <div className="room-name">
+               <strong>Name:</strong>{room.name}
+              </div>
+              <div className='room-info'>
                 <strong>Floor:</strong> {room.floor}
               </div>
-              <div>
+              <div className='room-info'>
                 <strong>Boss:</strong> {room.boss}
               </div>
             
-                <div>
+                <div className='room-info'>
                   <strong>Inventory:</strong> {room.inventory[0].Name}
                 </div>
               
@@ -211,8 +216,9 @@ const Rooms = () => {
 
       {isRegistered ? (
   <div>
+    <div className='buttons-container'>
     <button onClick={() => setShowForm(!showForm)}>Add Room</button>
-    <button onClick={handleLogout}>Logout</button>
+    <button onClick={handleLogout}>Logout</button> </div>
     {showForm && (
       <form onSubmit={handleSubmit}>
         <label htmlFor="Floor">Floor:</label>
@@ -256,6 +262,7 @@ const Rooms = () => {
 )}
        
       </div>
+    
   <Footer/>
 
 </>
