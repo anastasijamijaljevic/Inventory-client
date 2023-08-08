@@ -153,7 +153,9 @@ const RoomPage = () => {
       const result = await api.get(`/api/Room/${id}`);
       const data = result.data;
       setRoom(data);
-      setInventory(data.inventory)
+
+      const sortedInventory = data.inventory.slice().sort((a,b) => a.Name - b.Name)
+      setInventory(sortedInventory)
       setWorker(data.worker)
       const imageUrls = await Promise.all(data.inventory.map(async item => {
         try {
@@ -222,7 +224,11 @@ const RoomPage = () => {
 
         {inventory.map((item, index) => (
           <div key={index}>
-            <img style={{ width: 300, height: 100 }} src={image[index]} alt={`Image ${index}`} />
+            {image[index] ? (
+              <img style={{ width: 300, height: 100 }} src={image[index]} alt={`Image ${index}`} />
+            ) : (
+              <img style={{ width: 300, height: 100 }} src="" alt={`Image ${index}`} />
+            )}
             <h1>Name: {item.name}</h1>
             <h1>Image: {item.imageUrl}</h1>
             <h1>Serial Number: {item.serialNumber}</h1>
