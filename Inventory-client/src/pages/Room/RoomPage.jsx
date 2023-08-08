@@ -13,16 +13,15 @@ import Footer from '../../components/Footer/Footer'
 
 const RoomPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [room, setRoom] = useState([]);
   const [inventory, setInventory] = useState([])
   const [image, setImage] = useState([]);
   const [workers, setWorkers] = useState([])
   const [worker, setWorker] = useState([])
   const [showInventoryForm, setShowInventoryForm] = useState(false);
-  const [workerId, setWorkerId] = useState({
-    workerId: 'a4625e35-1846-46b9-b7bb-fc21b032573e'
-  })
-  const navigate = useNavigate();
+  const [selectedWorker, setSelectedWorker] = useState(null);
+  const [imageUpload,setImageUpload] = useState(null)
   const [createdInventory, setCreatedInventory] = useState({
     Name: '',
     SerialNumber: 0,
@@ -30,12 +29,13 @@ const RoomPage = () => {
     Model: '',
     Quantity: 0,
     Price: 0,
-    ImageUrl: 'kelly-sikkema-tk9RQCq5eQo-unsplash.jpg',
+    ImageUrl: '',
     RoomId: `${id}`
   })
 
 
 
+  // WORKER/BOSS: 
   const getAllWorkers = async () => {
     try {
       const result = await api.get("/api/Worker");
@@ -50,18 +50,22 @@ const RoomPage = () => {
 
   const UpdateWorker = async (roomId) => {
     try {
-      const response = await api.put(`/api/Room/${roomId}/worker`, workerId, {
+      const response = await api.put(`/api/Room/${roomId}/worker`, {workerId: selectedWorker?.id}, {
         headers: {
           'Content-Type': 'application/json'
         },
       });
       console.log('Boss added successfully:', response.data);
-      getRoomById(id); // Refresh the list of users after update
+      setSelectedWorker(null); 
+      getRoomById(id);
     } catch (error) {
       console.error('Error adding Boss:', error);
     }
   };
 
+
+
+  //INVENTORY:
   const createInventory = async () => {
     try {
       const response = await api.post('/api/Inventory', createdInventory);
@@ -82,6 +86,23 @@ const RoomPage = () => {
     }
   };
 
+
+
+  //IMAGES:
+  const uploadImage = async () => {
+    if(imageUpload == null) return;
+
+    try{
+    const imageRef = ref(storage, `images/${imageUpload.name}`);
+    await uploadBytes(imageRef, imageUpload);
+    
+  }
+  catch(error){
+    console.error('Error uploading image to Firebase:', error);
+    }
+  };
+
+
   const getImage = async (imageName) => {
     const imageRef = ref(storage, `images/${imageName}`);
     try {
@@ -94,6 +115,39 @@ const RoomPage = () => {
   };
 
 
+  const handleInventoryFormSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const uploadedImageUrl = await uploadImage();
+      console.log(uploadedImageUrl)
+
+     
+      await createInventory();
+      
+      
+      setCreatedInventory({
+        Name: '',
+        SerialNumber: 0,
+        Mark: '',
+        Model: '',
+        Quantity: 0,
+        Price: 0,
+        ImageUrl: '',
+        RoomId: `${id}`
+      });
+
+      console.log(createdInventory)
+     
+      setShowInventoryForm(false);
+    } catch (error) {
+      console.error('Error creating Inventory:', error);
+    }
+  };
+
+
+
+  //ROOM
   const getRoomById = async (id) => {
     try {
       const result = await api.get(`/api/Room/${id}`);
@@ -132,19 +186,10 @@ const RoomPage = () => {
     }
   };
 
-  useEffect(() => {
-    // getDownloadURL(imageListRef).then((url) => {
-    //   setImageList(url)
-    //   //console.log(imageList)
-    // })
 
-    // listAll(imageListRef).then((response) => {
-    //   response.items.forEach((item) =>{
-    //     getDownloadURL(item).then((url) => {
-    //       setImageList((prev) => [...prev, url])
-    //     })
-    //   })
-    // }) 
+
+
+  useEffect(() => {
     getRoomById(id);
     getAllWorkers();
 
@@ -157,31 +202,7 @@ const RoomPage = () => {
   //     return <div>Loading...</div>;
   //   }
 
-  const handleInventoryFormSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      
-      await createInventory();
-      
-      
-      setCreatedInventory({
-        Name: '',
-        SerialNumber: 0,
-        Mark: '',
-        Model: '',
-        Quantity: 0,
-        Price: 0,
-        ImageUrl: 'kelly-sikkema-tk9RQCq5eQo-unsplash.jpg',
-        RoomId: `${id}`
-      });
-      
-     
-      setShowInventoryForm(false);
-    } catch (error) {
-      console.error('Error creating Inventory:', error);
-    }
-  };
+  
 
   return (
     <>
@@ -198,24 +219,7 @@ const RoomPage = () => {
         </div>
         <br />
         <h1>Inventory:</h1>
-        {/* {image.map((imageUrl, index) => (
-              <div key={index}>
-                <img  style={{width:300 , height:100}} src={imageUrl} alt={`Image ${index}`} />
-                <h1>Name: {room.inventory[index].name}</h1>
-                <h1>Image: {room.inventory[index].imageUrl}</h1>
-                <h1>Serial Number: {room.inventory[index].serialNumber}</h1>
-                <h1>Mark: {room.inventory[index].mark}</h1>
-                <h1>Model: {room.inventory[index].model}</h1>
-                <h1>Quantity: {room.inventory[index].quantity}</h1>
-                <h1>Price: {room.inventory[index].price}</h1>
 
-                <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
-              </div>                      
-                    ))} */}
-
-
-        {/*KADA SE BUDE RADIO CSS POSTO CE SE SLIKE OVDE UCITAVATI ONDA NEKA CELI DEO ZA INVENTAR BUDE UNUTAR OVE MAP FUNKCIJE
-            ZBOG SLIKA, OSTALO MOZE DA BUDE VAN*/}
         {inventory.map((item, index) => (
           <div key={index}>
             <img style={{ width: 300, height: 100 }} src={image[index]} alt={`Image ${index}`} />
@@ -230,113 +234,136 @@ const RoomPage = () => {
             <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
           </div>
         ))}
+
        <button onClick={() => setShowInventoryForm(true)}>Add Inventory</button>
         <button onClick={() => deleteRoom(room.id)}>Delete Room</button>
         <br />
         <h1>Boss:</h1>
 
-        {worker && (
+        {worker ? (
           <div>
             <h1>Name: {worker.name}</h1>
             <h1>Surname: {worker.surname}</h1>
             <h1>Gender: {worker.gender}</h1>
             <h1>Personalnumber: {worker.personalNumber}</h1>
-            <h1>Qualification: {worker.qualification}</h1>
+            {/* <h1>Qualification: {worker.qualification}</h1> */}
           </div>
+        ) : (
+        <div>
+          <label htmlFor="selectedWorker">Select Boss:</label>
+          <select
+            id="selectedWorker"
+            value={selectedWorker?.id || ''}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              const selectedWorker = workers.find(worker => worker.id === selectedId)
+
+              if(selectedWorker && selectedWorker.qualification === "Worker"){
+                setSelectedWorker(selectedWorker)
+              }
+              else{
+                setSelectedWorker(null);
+              }
+            }}
+          >
+            <option value="">Select a Boss</option>
+            {workers
+            .filter(worker => worker.qualification === "Worker")
+            .map(worker => (
+              <option key={worker.id} value={worker.id}>
+                {`${worker.name} ${worker.surname}`}
+              </option>
+            ))}
+          </select>
+          <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
+        </div>
         )}
-
-
-        <h1>Available Workers:</h1>
-        {workers.map((workerItem) => (
-          <div key={workerItem.id}>
-            <h1>Name: {workerItem.name}</h1>
-            <h1>Surname: {workerItem.surname}</h1>
-            <h1>Gender: {workerItem.gender}</h1>
-            <h1>Personalnumber: {workerItem.personalNumber}</h1>
-            <h1>Qualification: {workerItem.qualification}</h1>
-          </div>
-        ))}
-
-
-        <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
-        {/* <button onClick={() => setWorker(workers[0])}>Add Boss</button> */}
 
         <button onClick={printInventoryDocumentation}>Print Document</button>
 
       </div>
+        
 
       
 
 
-      <button onClick={() => setShowInventoryForm(true)}>Add Inventory</button>
 
-{showInventoryForm && (
-  <div>
-   
-    <form onSubmit={handleInventoryFormSubmit}>
-      <label htmlFor="name">Name:</label>
-      <input
-        type="text"
-        id="name"
-        value={createdInventory.Name}
-        onChange={(e) =>
-          setCreatedInventory({ ...createdInventory, Name: e.target.value })
-        }
-      />
-      <label htmlFor="serialNumber">Serial Number:</label>
-      <input
-        type="number"
-        id="serialNumber"
-        value={createdInventory.SerialNumber}
-        onChange={(e) =>
-          setCreatedInventory({ ...createdInventory, SerialNumber: parseInt(e.target.value) })
-        }
-      />
-      <label htmlFor="mark">Mark:</label>
-      <input
-        type="text"
-        id="mark"
-        value={createdInventory.Mark}
-        onChange={(e) =>
-          setCreatedInventory({ ...createdInventory, Mark: e.target.value })
-        }
-      />
-      <label htmlFor="model">Model:</label>
-      <input
-        type="text"
-        id="model"
-        value={createdInventory.Model}
-        onChange={(e) =>
-          setCreatedInventory({ ...createdInventory, Model: e.target.value })
-        }
-      />
-      <label htmlFor="quantity">Quantity</label>
-      <input
-        type="number"
-        id="quantity"
-        value={createdInventory.Quantity}
-        onChange={(e) =>
-          setCreatedInventory({ ...createdInventory, Quantity: parseInt(e.target.value) })
-        }
-      />
-      <label htmlFor="price">Price:</label>
-      <input
-        type="number"
-        id="price"
-        value={createdInventory.Price}
-        onChange={(e) =>
-          setCreatedInventory({ ...createdInventory, Price: parseFloat(e.target.value) })
-        }
-      />
-      <button type="submit">Add Inventory</button>
-    </form>
-  </div>
-)}
-<Footer/>
-</>
+      {showInventoryForm && (
+      <div>
+        <form onSubmit={handleInventoryFormSubmit}>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            value={createdInventory.Name}
+            onChange={(e) =>
+              setCreatedInventory({ ...createdInventory, Name: e.target.value })
+            }
+          />
+          <br />
+          <label htmlFor="serialNumber">Serial Number:</label>
+          <input
+            type="number"
+            id="serialNumber"
+            value={createdInventory.SerialNumber}
+            onChange={(e) =>
+              setCreatedInventory({ ...createdInventory, SerialNumber: parseInt(e.target.value) })
+            }
+          />
+          <br />
+          <label htmlFor="mark">Mark:</label>
+          <input
+            type="text"
+            id="mark"
+            value={createdInventory.Mark}
+            onChange={(e) =>
+              setCreatedInventory({ ...createdInventory, Mark: e.target.value })
+            }
+          />
+          <br />
+          <label htmlFor="model">Model:</label>
+          <input
+            type="text"
+            id="model"
+            value={createdInventory.Model}
+            onChange={(e) =>
+              setCreatedInventory({ ...createdInventory, Model: e.target.value })
+            }
+          />
+          <br />
+          <label htmlFor="quantity">Quantity</label>
+          <input
+            type="number"
+            id="quantity"
+            value={createdInventory.Quantity}
+            onChange={(e) =>
+              setCreatedInventory({ ...createdInventory, Quantity: parseInt(e.target.value) })
+            }
+          />
+          <br />
+          <label htmlFor="price">Price:</label>
+          <input
+            type="number"
+            id="price"
+            value={createdInventory.Price}
+            onChange={(e) =>
+              setCreatedInventory({ ...createdInventory, Price: parseFloat(e.target.value) })
+            }
+          />
+          <label htmlFor="Image">Image</label>
+          <input 
+            type="file" 
+            onChange={(e) => {
+              setImageUpload(e.target.files[0]);
+              setCreatedInventory({ ...createdInventory, ImageUrl: e.target.files[0].name})
+              }} />
+          <button type="submit" onClick={handleInventoryFormSubmit}>Add Inventory</button>
+        </form>
+      </div>
+      )}
+      <Footer/>
+    </>
   )
-
-
 }
 
 
