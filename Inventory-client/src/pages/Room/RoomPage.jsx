@@ -9,6 +9,7 @@ import { ref, uploadBytes, listAll, getDownloadURL } from 'firebase/storage'
 import { printInventoryDocumentation } from "../Documentation/printButton";
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
+import Footer from '../../components/Footer/Footer'
 
 const RoomPage = () => {
   const { id } = useParams();
@@ -229,7 +230,7 @@ const RoomPage = () => {
             <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
           </div>
         ))}
-       <button onClick={() => setShowInventoryForm(true)}>Dodaj Inventar</button>
+       <button onClick={() => setShowInventoryForm(true)}>Add Inventory</button>
         <button onClick={() => deleteRoom(room.id)}>Delete Room</button>
         <br />
         <h1>Boss:</h1>
