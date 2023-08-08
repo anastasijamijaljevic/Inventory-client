@@ -246,7 +246,6 @@ const RoomPage = () => {
             <h1>Surname: {worker.surname}</h1>
             <h1>Gender: {worker.gender}</h1>
             <h1>Personalnumber: {worker.personalNumber}</h1>
-            {/* <h1>Qualification: {worker.qualification}</h1> */}
           </div>
         ) : (
         <div>
