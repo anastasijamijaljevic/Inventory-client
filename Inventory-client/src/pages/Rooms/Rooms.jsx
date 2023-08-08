@@ -10,6 +10,7 @@ import CreateRoom from '../../components/CreateRoom'
 import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 import Navbar from '../../components/Navbar/Navbar'
+import Footer from '../../components/Footer/Footer'
 
 
 
@@ -238,6 +239,9 @@ const Rooms = () => {
            }} />
         <button onClick={uploadImage}>Upload Image</button>
 
+
+
+        
         {imageList.map((url) => {
           return <img style={{width:300 , height:100}} src={url} />
         })}
