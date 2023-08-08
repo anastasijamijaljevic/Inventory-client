@@ -5,14 +5,12 @@ import Navbar from '../../components/Navbar/Navbar';
 const RegistrationForm = ({ setIsRegistered }) => {
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     password: '',
     confirmPassword: '',
   });
 
   const [formErrors, setFormErrors] = useState({
     username: '',
-    email: '',
     password: '',
     confirmPassword: '',
   });
@@ -35,11 +33,11 @@ const RegistrationForm = ({ setIsRegistered }) => {
     setFormErrors(newFormErrors);
 
     if (Object.values(newFormErrors).every((error) => error === '')) {
-      // Implementacija logike za uspesnu registraciju
+      // Implement registration logic here
       console.log('Registration successful:', formData);
-      setIsRegistered(true); // Postavljanje statusa registrovanog korisnika
+      setIsRegistered(true); // Set registered status
 
-      // Sačuvaj informaciju o registraciji u Local Storage
+      // Save registration information in Local Storage
       localStorage.setItem('isRegistered', true);
     }
   };
@@ -51,11 +49,6 @@ const RegistrationForm = ({ setIsRegistered }) => {
     } else if (!isValidUsername(data.username)) {
       errors.username =
         'Username can only contain letters, numbers and underscores';
-    }
-    if (!data.email.trim()) {
-      errors.email = 'Email is required';
-    } else if (!isValidEmail(data.email)) {
-      errors.email = 'Please enter a valid email';
     }
     if (!data.password.trim()) {
       errors.password = 'Password is required';
@@ -73,11 +66,6 @@ const RegistrationForm = ({ setIsRegistered }) => {
     return usernamePattern.test(username);
   };
 
-  const isValidEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  };
-
   return (
     <>
     <Navbar/>
@@ -93,18 +81,6 @@ const RegistrationForm = ({ setIsRegistered }) => {
           required
         />
         {formErrors.username && <p className="error">{formErrors.username}</p>}
-      </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        {formErrors.email && <p className="error">{formErrors.email}</p>}
       </div>
       <div>
         <label htmlFor="password">Password:</label>
