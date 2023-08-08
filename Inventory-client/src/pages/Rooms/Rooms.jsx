@@ -17,19 +17,24 @@ import { FaWarehouse } from 'react-icons/fa';
 
 
 
+
 const Rooms = () => {
   const { id } = useParams();
   const [rooms, setRooms] = useState([]);
+  const [workers, setWorkers] = useState([])
+  const [imageUpload,setImageUpload] = useState(null)
   const [showForm, setShowForm] = useState(false);
+  const [roomCreated,setRoomCreated] = useState(false)
+  const [selectedWorker, setSelectedWorker] = useState(null);
+
   const [isRegistered, setIsRegistered] = useState(
     localStorage.getItem('isRegistered') === 'true'
   );
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     localStorage.getItem('isLoggedIn') === 'true'
   );
 
-
-  // Koristi ovo da bi unela podatke stim sto ces koristiti unete podatke umesto '' i 0 (sve osim ImageUrl, to ce morati na poseban nacin da se radi)
   const [createdRoom, setCreatedRoom] = useState({
     Name: '',
     Floor: 0,
@@ -47,14 +52,39 @@ const Rooms = () => {
       ImageUrl: "kelly-sikkema-tk9RQCq5eQo-unsplash.jpg",
       RoomId: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     }],
-    Worker: {
-      PersonalNumber: '',
-      Name: '',
-      Surname: '',
-      Gender: 0,
-      Qualification: '',
-    }
+    Worker: null
   })
+
+
+  const getAllWorkers = async () => {
+    try {
+      const result = await api.get("/api/Worker");
+      const data = result.data;
+      setWorkers(data);
+      console.log(data)
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
+  const UpdateWorker = async (roomId) => {
+    try {
+      const response = await api.put(`/api/Room/${roomId}/worker`, {workerId: selectedWorker?.id}, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      console.log('Boss added successfully:', response.data);
+      setSelectedWorker(null); 
+    } catch (error) {
+      console.error('Error adding Boss:', error);
+    }
+  };
+
+
 
   const handleFormChange = (event) => {
     const { name, value } = event.target;
@@ -63,6 +93,23 @@ const Rooms = () => {
       [name]: value,
     }));
   }
+
+
+
+  const uploadImage = async () => {
+    if(imageUpload == null) return;
+
+    try{
+    const imageRef = ref(storage, `images/${imageUpload.name}`);
+    await uploadBytes(imageRef, imageUpload);
+    
+  }
+  catch(error){
+    console.error('Error uploading image to Firebase:', error);
+    }
+  };
+
+
 
   const handleAddInventory = () => {
     setCreatedRoom((prevRoom) => ({
@@ -83,10 +130,22 @@ const Rooms = () => {
     }));
   };
 
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await createRoom();
+
+    const result = await createRoom();
+    const roomId = result.inventory[0].roomId
+
+    if(selectedWorker){
+      await UpdateWorker(roomId)
+    }
+
+    await uploadImage();
+
     setShowForm(false);
+
     setCreatedRoom({
       ...createdRoom,
       Name: '',
@@ -105,12 +164,22 @@ const Rooms = () => {
         },
       ],
     });
+
+    setRoomCreated(true)
   };
+
+
 
   const handleInventoryChange = (event, index) => {
     const { name, value } = event.target;
     const updatedInventory = [...createdRoom.Inventory];
     updatedInventory[index][name] = value;
+    if(name === 'Image'){
+      const fileName = event.target.files[0]?.name;
+    if (fileName) {
+      updatedInventory[index].ImageUrl = fileName;
+    }
+    }
     setCreatedRoom((prevRoom) => ({
       ...prevRoom,
       Inventory: updatedInventory,
@@ -118,76 +187,67 @@ const Rooms = () => {
   };
 
 
+
   const createRoom = async () => {
     try {
       const response = await api.post('/api/Room', createdRoom);
       console.log('User created successfully:', response.data);
-      // Do something with the response if needed
+      const data = response.data
       getAllRooms();
+      return data;
     } catch (error) {
       console.error('Error creating user:', error);
     }
   };
+
+
 
   const getAllRooms = async () => {
     try {
       const result = await api.get('/api/Room');
       const data = result.data;
       setRooms(data);
-      //console.log(data);
     } catch (error) {
       console.log('Error fetching rooms:', error);
     }
   };
+
+
 
   const handleRegistration = () => {
     setIsRegistered(true);
     setIsLoggedIn(true);
     setShowForm(false);
   };
+
+
   const handleLogout = () => {
     localStorage.removeItem('isRegistered');
     localStorage.removeItem('isLoggedIn');
     setIsRegistered(false);
     setIsLoggedIn(false);
   };
-  // const [imageList,setImageList] = useState([])
-  // const [imageUpload,setImageUpload] = useState(null)
-  // const imageListRef = ref(storage, "images/")
-  // const uploadImage = () => {
-  //   if(imageUpload == null) return;
-  //   const imageRef = ref(storage, `images/${imageUpload.name}`);
-  //   uploadBytes(imageRef, imageUpload).then((snapshoot) => {
-  //     getDownloadURL(snapshoot.ref).then((url) => {
-  //     setImageList((prev) => [...prev, url])
-  //     })
-  //   })
-  // };
 
+  
   useEffect(() => {
-
-    // listAll(imageListRef).then((response) => {
-    //   response.items.forEach((item) =>{
-    //     getDownloadURL(item).then((url) => {
-    //       setImageList((prev) => [...prev, url])
-    //     })
-    //   })
-    // })
-
     getAllRooms();
+    getAllWorkers();
 
-  }, []);
+    if(roomCreated){
+      setRoomCreated(false);
+    }
+
+  }, [roomCreated]);
 
   
 
  
 
   return (
-    <>
+  <>
     <Navbar/>
-  
     <div className="room-list-container">
-    
+      <h1>Rooms</h1>
       <ul className="room-list">
         {rooms.map((room) => (
           <Link to={`../room/${room.id}`} key={room.id} className="room-link">
@@ -195,8 +255,8 @@ const Rooms = () => {
             <div className="room-icon">
               <FaWarehouse size={60} />
               </div>
-              <div className="room-name">
-               <strong>Name:</strong>{room.name}
+              <div className='room-name'>
+                {room.name}
               </div>
               <div className='room-info'>
                 <strong>Floor:</strong> {room.floor}
@@ -204,9 +264,9 @@ const Rooms = () => {
               <div className='room-info'>
                 <strong>Boss:</strong> {room.boss}
               </div>
-            
-                <div className='room-info'>
-                  <strong>Inventory:</strong> {room.inventory[0].Name}
+
+                <div>
+                  {/* <strong>Inventory:</strong> {room.inventory[0].Name} */}
                 </div>
               
             </li>
@@ -215,29 +275,85 @@ const Rooms = () => {
       </ul>
 
       {isRegistered ? (
-  <div>
-    <div className='buttons-container'>
-    <button onClick={() => setShowForm(!showForm)}>Add Room</button>
-    <button onClick={handleLogout}>Logout</button> </div>
-    {showForm && (
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="Floor">Floor:</label>
-        <input
-          type="text"
-          placeholder="Floor"
-          name="Floor"
-          value={createdRoom.Floor}
-          onChange={handleFormChange}
-        />
-        <br />
-        <label htmlFor="Boss">Boss:</label>
-        <input
-          type="text"
-          placeholder="Boss"
-          name="Boss"
-          value={createdRoom.Boss}
-          onChange={handleFormChange}
-        />
+      <div>
+        <div className='buttons-container'>
+        <button onClick={() => setShowForm(!showForm)}>Add Room</button>
+        <button onClick={handleLogout}>Logout</button> </div>
+        {showForm && (
+          <form onSubmit={handleSubmit}>
+          <label htmlFor="Name">Name:</label>
+          <input
+            type="text"
+            placeholder="Name"
+            name="Name"
+            value={createdRoom.Name}
+            onChange={handleFormChange}
+          />
+          <br />
+          <label htmlFor="Floor">Floor:</label>
+          <input
+            type="text"
+            placeholder="Floor"
+            name="Floor"
+            value={createdRoom.Floor}
+            onChange={handleFormChange}
+          />
+          <br />
+          <label htmlFor="Width">Width:</label>
+          <input
+            type="text"
+            placeholder="Width"
+            name="Width"
+            value={createdRoom.Width}
+            onChange={handleFormChange}
+          />
+          <br />
+          <label htmlFor="Length">Length:</label>
+          <input
+            type="text"
+            placeholder="Length"
+            name="Length"
+            value={createdRoom.Length}
+            onChange={handleFormChange}
+          />
+          <br />
+          <label htmlFor="Height">Height:</label>
+          <input
+            type="text"
+            placeholder="Height"
+            name="Height"
+            value={createdRoom.Height}
+            onChange={handleFormChange}
+          />
+          <br />
+
+          <label htmlFor="Boss">Boss:</label>
+          <select
+              id="selectedWorker"
+              value={selectedWorker?.id || ''}
+              onChange={(e) => {
+                const selectedId = e.target.value;
+                const selectedWorker = workers.find(worker => worker.id === selectedId)
+
+                if(selectedWorker && selectedWorker.qualification === "Worker"){
+                  setSelectedWorker(selectedWorker)
+                }
+                else{
+                  setSelectedWorker(null);
+                }
+              }}
+            >
+              <option value="">Select a Boss</option>
+              {workers
+              .filter(worker => worker.qualification === "Worker")
+              .map(worker => (
+                <option key={worker.id} value={worker.id}>
+                  {`${worker.name} ${worker.surname}`}
+                </option>
+              ))}
+            </select>
+            <br />
+
         {createdRoom.Inventory.map((item, index) => (
           <div key={index}>
             <h3>Inventory Item {index + 1}</h3>
@@ -248,26 +364,69 @@ const Rooms = () => {
               value={item.Name}
               onChange={(event) => handleInventoryChange(event, index)}
             />
-          </div>
+             <input
+              type="text"
+              placeholder="Item SerialNumber"
+              name="SerialNumber"
+              value={item.SerialNumber}
+              onChange={(event) => handleInventoryChange(event, index)}
+            />
+             <input
+              type="text"
+              placeholder="Item Mark"
+              name="Mark"
+              value={item.Mark}
+              onChange={(event) => handleInventoryChange(event, index)}
+            />
+             <input
+              type="text"
+              placeholder="Item Model"
+              name="Model"
+              value={item.Model}
+              onChange={(event) => handleInventoryChange(event, index)}
+            />
+             <input
+              type="text"
+              placeholder="Item Quantity"
+              name="Quantity"
+              value={item.Quantity}
+              onChange={(event) => handleInventoryChange(event, index)}
+            />
+             <input
+              type="text"
+              placeholder="Item Price"
+              name="Price"
+              value={item.Price}
+              onChange={(event) => handleInventoryChange(event, index)}
+            />
+            <label htmlFor="Image">Image</label>
+            <input 
+              type="file" 
+              name='Image'
+              onChange={(event) => {
+                setImageUpload(event.target.files[0]);
+                handleInventoryChange(event,index)
+                }} />
+            </div>
         ))}
+        <button type='button' onClick={handleAddInventory}>Add new Inventory</button>
         <button type="submit">Add Room</button>
       </form>
-    )}
-  </div>
-) : (
-  <div>
-   
-    <RegistrationForm setIsRegistered={handleRegistration} />
-  </div>
-)}
-       
+      )}
       </div>
-    
-  <Footer/>
+      
+      ) : (
 
-</>
+      <div>
+        <RegistrationForm setIsRegistered={handleRegistration} />
+      </div>
+
+      )}
+
+    </div>
+    <Footer/>
+  </>
   )
-
 }
 
 export default Rooms;
