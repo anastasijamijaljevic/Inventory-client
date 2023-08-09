@@ -10,6 +10,7 @@ import { printInventoryDocumentation } from "../Documentation/printButton";
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer'
+import InventoryDocumentation from "../Documentation/documentation";
 
 const RoomPage = () => {
   const { id } = useParams();
@@ -76,10 +77,13 @@ const RoomPage = () => {
     }
   };
 
-  const deleteInventory = async (inventory_id) => {
+  const deleteInventory = async (inventory_id, deletedInventory) => {
     try {
       await api.delete(`/api/Inventory/${inventory_id}`);
       console.log('Inventory deleted successfully');
+      if(deletedInventory){
+        printDocumentation(deletedInventory)
+      }
       getRoomById(id);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -189,6 +193,23 @@ const RoomPage = () => {
   };
 
 
+  const printDocumentation = async (deletedInventory) => {
+    if(deletedInventory){
+      try{
+         await printInventoryDocumentation('discharge', [deletedInventory], worker)
+      } catch(error){
+        console.log('Error printing documentation:', error);
+      }
+    } else{
+      try{
+      await printInventoryDocumentation('charge', inventory, worker)
+    } catch(error){
+      console.log('Error printing documentation:', error);
+    }
+   }
+  }
+
+
 
 
   useEffect(() => {
@@ -237,7 +258,7 @@ const RoomPage = () => {
             <h1>Quantity: {item.quantity}</h1>
             <h1>Price: {item.price}</h1>
 
-            <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
+            <button onClick={() => deleteInventory(room.inventory[index].id, inventory[index])}>Delete Inventory</button>
           </div>
         ))}
 
@@ -283,8 +304,7 @@ const RoomPage = () => {
           <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
         </div>
         )}
-
-        <button onClick={printInventoryDocumentation}>Print Document</button>
+        <button onClick={() => printInventoryDocumentation('',inventory,worker)}>Print Document</button>
 
       </div>
         
