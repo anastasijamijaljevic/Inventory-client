@@ -113,3 +113,77 @@ body {
     border-radius: 8px;
    
   }
+
+
+  .room-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: opacity 0.3s, visibility 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    width: 400px;
+    max-width: 90%;
+    overflow-y: auto;
+  }
+  
+  .room-form.active {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .room-form.active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: -1;
+  }
+  
+  .room-form h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .room-form::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 120px;
+    height: 40px;
+    background-color: #f8f8f8;
+    transform: translateX(-50%) skewX(-15deg);
+    z-index: -2;
+  }
+  
+  .room-form::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 100px;
+    height: 30px;
+    background-color: #fff;
+    transform: translateX(-50%) skewX(-15deg);
+    z-index: -1;
+  }
+  
+  .room-form.expanded {
+    max-height: 80vh; 
+  }
+  
+  .room-form.expanded .inventory-item {
+    margin-bottom: 20px;
+  }

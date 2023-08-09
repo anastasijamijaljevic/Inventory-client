@@ -6,7 +6,6 @@ import api from '../../api/api'
 import './Rooms.css'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import CreateRoom from '../../components/CreateRoom'
 import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 import Navbar from '../../components/Navbar/Navbar'
@@ -26,6 +25,7 @@ const Rooms = () => {
   const [showForm, setShowForm] = useState(false);
   const [roomCreated,setRoomCreated] = useState(false)
   const [selectedWorker, setSelectedWorker] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false); 
 
   const [isRegistered, setIsRegistered] = useState(
     localStorage.getItem('isRegistered') === 'true'
@@ -128,6 +128,7 @@ const Rooms = () => {
         },
       ],
     }));
+    setIsExpanded(true);
   };
 
 
@@ -228,6 +229,11 @@ const Rooms = () => {
     setIsLoggedIn(false);
   };
 
+  const handleToggleForm = () => {
+    setShowForm(!showForm);
+  };
+  
+
   
   useEffect(() => {
     getAllRooms();
@@ -277,9 +283,10 @@ const Rooms = () => {
       {isRegistered ? (
       <div>
         <div className='buttons-container'>
-        <button onClick={() => setShowForm(!showForm)}>Add Room</button>
-        <button onClick={handleLogout}>Logout</button> </div>
+        <button onClick={handleToggleForm}>Add room</button>
+        <button onClick={handleLogout}>Log Out</button> </div>
         {showForm && (
+          <div className={`room-form ${showForm ? 'active' : ''} ${isExpanded ? 'expanded' : ''}`}>
           <form onSubmit={handleSubmit}>
           <label htmlFor="Name">Name:</label>
           <input
@@ -412,6 +419,7 @@ const Rooms = () => {
         <button type='button' onClick={handleAddInventory}>Add new Inventory</button>
         <button type="submit">Add Room</button>
       </form>
+      </div>
       )}
       </div>
       
