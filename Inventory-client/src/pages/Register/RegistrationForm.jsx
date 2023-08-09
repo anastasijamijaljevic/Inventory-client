@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import './RegistrationForm.css'
 import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
@@ -39,6 +40,7 @@ const RegistrationForm = ({ setIsRegistered }) => {
 
       // Save registration information in Local Storage
       localStorage.setItem('isRegistered', true);
+      localStorage.setItem('userInfo' , JSON.stringify(formData))
     }
   };
 

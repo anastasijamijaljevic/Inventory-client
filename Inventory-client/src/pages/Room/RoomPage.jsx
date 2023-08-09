@@ -10,6 +10,7 @@ import { printInventoryDocumentation } from "../Documentation/printButton";
 import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer'
+import InventoryDocumentation from "../Documentation/documentation";
 
 const RoomPage = () => {
   const { id } = useParams();
@@ -76,10 +77,13 @@ const RoomPage = () => {
     }
   };
 
-  const deleteInventory = async (inventory_id) => {
+  const deleteInventory = async (inventory_id, deletedInventory) => {
     try {
       await api.delete(`/api/Inventory/${inventory_id}`);
       console.log('Inventory deleted successfully');
+      if(deletedInventory){
+        printDocumentation(deletedInventory)
+      }
       getRoomById(id);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -153,7 +157,9 @@ const RoomPage = () => {
       const result = await api.get(`/api/Room/${id}`);
       const data = result.data;
       setRoom(data);
-      setInventory(data.inventory)
+
+      const sortedInventory = data.inventory.slice().sort((a,b) => a.Name - b.Name)
+      setInventory(sortedInventory)
       setWorker(data.worker)
       const imageUrls = await Promise.all(data.inventory.map(async item => {
         try {
@@ -185,6 +191,23 @@ const RoomPage = () => {
       console.error('Error deleting user:', error);
     }
   };
+
+
+  const printDocumentation = async (deletedInventory) => {
+    if(deletedInventory){
+      try{
+         await printInventoryDocumentation('discharge', [deletedInventory], worker)
+      } catch(error){
+        console.log('Error printing documentation:', error);
+      }
+    } else{
+      try{
+      await printInventoryDocumentation('charge', inventory, worker)
+    } catch(error){
+      console.log('Error printing documentation:', error);
+    }
+   }
+  }
 
 
 
@@ -222,7 +245,11 @@ const RoomPage = () => {
 
         {inventory.map((item, index) => (
           <div key={index}>
-            <img style={{ width: 300, height: 100 }} src={image[index]} alt={`Image ${index}`} />
+            {image[index] ? (
+              <img style={{ width: 300, height: 100 }} src={image[index]} alt={`Image ${index}`} />
+            ) : (
+              <img style={{ width: 300, height: 100 }} src="" alt={`Image ${index}`} />
+            )}
             <h1>Name: {item.name}</h1>
             <h1>Image: {item.imageUrl}</h1>
             <h1>Serial Number: {item.serialNumber}</h1>
@@ -231,7 +258,7 @@ const RoomPage = () => {
             <h1>Quantity: {item.quantity}</h1>
             <h1>Price: {item.price}</h1>
 
-            <button onClick={() => deleteInventory(room.inventory[index].id)}>Delete Inventory</button>
+            <button onClick={() => deleteInventory(room.inventory[index].id, inventory[index])}>Delete Inventory</button>
           </div>
         ))}
 
@@ -277,8 +304,7 @@ const RoomPage = () => {
           <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
         </div>
         )}
-
-        <button onClick={printInventoryDocumentation}>Print Document</button>
+        <button onClick={() => printInventoryDocumentation('',inventory,worker)}>Print Document</button>
 
       </div>
         
