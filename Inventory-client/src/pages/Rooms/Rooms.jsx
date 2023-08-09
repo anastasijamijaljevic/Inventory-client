@@ -6,13 +6,14 @@ import api from '../../api/api'
 import './Rooms.css'
 import { Link } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
-import CreateRoom from '../../components/CreateRoom'
 import { storage } from '../../firebase'
 import {ref , uploadBytes , listAll , getDownloadURL} from 'firebase/storage'
 import Navbar from '../../components/Navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
 import LoginForm from '../Login/LoginForm'
 import RegistrationForm from '../Register/RegistrationForm'
+import { FaWarehouse } from 'react-icons/fa';
+
 
 
 
@@ -24,6 +25,7 @@ const Rooms = () => {
   const [showForm, setShowForm] = useState(false);
   const [roomCreated,setRoomCreated] = useState(false)
   const [selectedWorker, setSelectedWorker] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false); 
 
   const [isRegistered, setIsRegistered] = useState(
     localStorage.getItem('isRegistered') === 'true'
@@ -126,6 +128,7 @@ const Rooms = () => {
         },
       ],
     }));
+    setIsExpanded(true);
   };
 
 
@@ -226,6 +229,11 @@ const Rooms = () => {
     setIsLoggedIn(false);
   };
 
+  const handleToggleForm = () => {
+    setShowForm(!showForm);
+  };
+  
+
   
   useEffect(() => {
     getAllRooms();
@@ -250,13 +258,16 @@ const Rooms = () => {
         {rooms.map((room) => (
           <Link to={`../room/${room.id}`} key={room.id} className="room-link">
             <li className="room-item">
-              <div>
+            <div className="room-icon">
+              <FaWarehouse size={60} />
+              </div>
+              <div className='room-name'>
                 {room.name}
               </div>
-              <div>
+              <div className='room-info'>
                 <strong>Floor:</strong> {room.floor}
               </div>
-              <div>
+              <div className='room-info'>
                 <strong>Boss:</strong> {room.boss}
               </div>
 
@@ -271,9 +282,11 @@ const Rooms = () => {
 
       {isRegistered ? (
       <div>
-        <button onClick={() => setShowForm(!showForm)}>Add Room</button>
-        <button onClick={handleLogout}>Logout</button>
+        <div className='buttons-container'>
+        <button onClick={handleToggleForm}>Add room</button>
+        <button onClick={handleLogout}>Log Out</button> </div>
         {showForm && (
+          <div className={`room-form ${showForm ? 'active' : ''} ${isExpanded ? 'expanded' : ''}`}>
           <form onSubmit={handleSubmit}>
           <label htmlFor="Name">Name:</label>
           <input
@@ -406,6 +419,7 @@ const Rooms = () => {
         <button type='button' onClick={handleAddInventory}>Add new Inventory</button>
         <button type="submit">Add Room</button>
       </form>
+      </div>
       )}
       </div>
       
