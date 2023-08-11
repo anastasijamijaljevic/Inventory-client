@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer'
 import InventoryDocumentation from "../Documentation/documentation";
+import './RoomPage.css'
 
 const RoomPage = () => {
   const { id } = useParams();
@@ -216,8 +217,9 @@ const RoomPage = () => {
     getRoomById(id);
     getAllWorkers();
 
-  }, [id, createdInventory])
-
+    const roomDetailsElement = document.querySelector('.room-details');
+    roomDetailsElement.classList.add('loaded');
+  }, [id, createdInventory]);
 
   // const boss = room.worker;
   // if (!boss) {
@@ -229,7 +231,8 @@ const RoomPage = () => {
 
   return (
     <>
-      <Navbar />
+    <Navbar />
+      <div className="roomContainer">
       <div className="room-details">
         <h1>ID SOBE:{id}</h1>
         <div>
@@ -306,6 +309,7 @@ const RoomPage = () => {
         )}
         <button onClick={() => printInventoryDocumentation('charge',inventory,worker, image)}>Print Document</button>
 
+      </div>
       </div>
         
 
