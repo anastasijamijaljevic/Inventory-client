@@ -197,13 +197,13 @@ const RoomPage = () => {
   const printDocumentation = async (deletedInventory) => {
     if(deletedInventory){
       try{
-         await printInventoryDocumentation('discharge', [deletedInventory], worker)
+         await printInventoryDocumentation('discharge', [deletedInventory], worker, image)
       } catch(error){
         console.log('Error printing documentation:', error);
       }
     } else{
       try{
-      await printInventoryDocumentation('charge', inventory, worker)
+      await printInventoryDocumentation('charge', inventory, worker, image)
     } catch(error){
       console.log('Error printing documentation:', error);
     }
@@ -307,7 +307,7 @@ const RoomPage = () => {
           <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
         </div>
         )}
-        <button onClick={() => printInventoryDocumentation('',inventory,worker)}>Print Document</button>
+        <button onClick={() => printInventoryDocumentation('charge',inventory,worker, image)}>Print Document</button>
 
       </div>
       </div>
