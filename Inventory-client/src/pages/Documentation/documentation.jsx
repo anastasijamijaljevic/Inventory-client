@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-function InventoryDocumentation({ action, inventory, worker }) {
+function InventoryDocumentation({ action, inventory, worker, image}) {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const currentDateTime = new Date();
   const formattedDate = currentDateTime.toLocaleDateString('en-US', {
@@ -9,6 +9,7 @@ function InventoryDocumentation({ action, inventory, worker }) {
     month: 'numeric',
     year: 'numeric',
   }).replace(/\//g, '.');
+
 
   const randomPhrasesForCharging = [
     'Project Use',
@@ -41,32 +42,37 @@ function InventoryDocumentation({ action, inventory, worker }) {
   const randomPhraseDischarge = randomPhrasesForDischarging[randomIndexDischarge];
 
   return (
-    <div>
-      <h2>Inventory Management Documentation</h2>
+    <div style={{padding:"2%", fontFamily:"'Space Grotesk', 'Space Grotesk Placeholder', sans-serif", fontWeight:'700'}}>
+      <h2 style={{textAlign:'center'}}>Inventory Management Documentation</h2>
 
-      <h3>Statement of {action === 'charge' ? 'Charging' : 'Discharging'} Inventory</h3>
+      <h3 style={{textAlign:'center'}}>Statement of {action === 'charge' ? 'Charging' : 'Discharging'} Inventory</h3>
 
       <p>
-        I, {userInfo.username}, hereby confirm that on {formattedDate}, I have{' '}
-        {action === 'charge' ? 'charged' : 'discharged'} the following items from our inventory:
+        I, <span style={{fontFamily:"Impact,Haettenschweiler,'Arial Narrow Bold', sans-serif", fontWeight:"lighter"}}>{userInfo.username}</span>, hereby confirm that on {formattedDate}, I have  
+         {action === 'charge' ? ' charged' : ' discharged'} the following items from our inventory:
       </p>
 
-      {inventory.map((item, index) => (
-        <div key={index}>
-          <p>Item {index + 1}:</p>
-          <p>Name: {item.name}</p>
-          <p>Serial Number: {item.serialNumber}</p>
-          <p>Mark: {item.mark}</p>
-          <p>Model: {item.model}</p>
-          <p>Quantity: {item.quantity}</p>
-          <p>Price: ${item.price}</p>
-        </div>
-      ))}
+      <div style={{display:"flex", flexDirection:'row',alignItems:'center',justifyContent:'space-evenly',flexWrap:'wrap',fontFamily:"'Jua','Jua Placeholder',sans-serif", fontWeight:'lighter'}}>
+        {inventory.map((item, index) => (
+          <div key={index}>
+            <p>Inventory {index + 1}:</p>
+            <img style={{ width: 250, height: 100 }} src={image[index]} alt={`Image ${index}`} />
+            <p>Name: {item.name}</p>
+            <p>Serial Number: {item.serialNumber}</p>
+            <p>Mark: {item.mark}</p>
+            <p>Model: {item.model}</p>
+            <p>Quantity: {item.quantity}</p>
+            <p>Price: ${item.price}</p>
+          </div>
+        ))}
+      </div>
+
+
 
       <p>
         These items have been {action === 'charge' ? 'taken from' : 'returned to'} our inventory
-        for the purpose of {action === 'charge' ? randomPhraseCharge : randomPhraseDischarge}. I{' '}
-        {action === 'charge' ? 'acknowledge my responsibility' : 'understand'} to ensure the
+        for the purpose of {action === 'charge' ? randomPhraseCharge : randomPhraseDischarge}. I <span style={{fontFamily:"Impact,Haettenschweiler,'Arial Narrow Bold', sans-serif", fontWeight:"lighter"}}>{userInfo.username}</span>
+        {action === 'charge' ? ' acknowledge my responsibility' : ' understand the need'} to ensure the
         proper use and {action === 'charge' ? 'accountability' : 'return'} of these items.
       </p>
 
@@ -81,8 +87,7 @@ function InventoryDocumentation({ action, inventory, worker }) {
       </p>
 
       <p>
-        Signed: {worker ?(<p>{worker.name} {worker.surname}</p>) : (<p>No Signature</p>)}<br />
-        <br />
+        Signed: {worker ?(<p>{worker.name} {worker.surname}</p>) : (<p>No Signature</p>)}
         {formattedDate}
       </p>
     </div>
