@@ -24,9 +24,9 @@
 }
 
 .room-details {
-  width: 250px;
-  height: 350px;
-  margin: 20px;
+  width: 350px;
+  height: 450px;
+  margin: 60px;
   padding: 10px;
   border: none;
   color: #333; 
@@ -42,6 +42,7 @@
   overflow-y: auto;
   border-radius: 10px; 
   transition: transform 0.3s, box-shadow 0.3s; 
+  margin-top: 12%;
 }
 
 .room-details.loaded {
@@ -68,7 +69,7 @@
 
 .room-details img {
   max-width: 100%;
-  width: 140px;
+  width: 220px;
   height: auto;
   margin: 20px auto 15px;
   border: 2px solid #333; 

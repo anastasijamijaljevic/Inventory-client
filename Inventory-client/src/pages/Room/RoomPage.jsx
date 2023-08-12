@@ -213,6 +213,8 @@ const RoomPage = () => {
 
 
 
+
+
   useEffect(() => {
     getRoomById(id);
     getAllWorkers();
@@ -231,8 +233,9 @@ const RoomPage = () => {
 
   return (
     <>
-    <Navbar />
+ 
       <div className="roomContainer">
+      <Navbar />
       <div className="room-details">
         <h1>ID SOBE:{id}</h1>
         <div>
@@ -317,8 +320,7 @@ const RoomPage = () => {
 
 
 
-      {showInventoryForm && (
-      <div>
+      <div className={`room-form ${showInventoryForm ? 'active' : ''}`}>
         <form onSubmit={handleInventoryFormSubmit}>
           <label htmlFor="name">Name:</label>
           <input
@@ -389,7 +391,7 @@ const RoomPage = () => {
           <button type="submit" onClick={handleInventoryFormSubmit}>Add Inventory</button>
         </form>
       </div>
-      )}
+      
       <Footer/>
     </>
   )
