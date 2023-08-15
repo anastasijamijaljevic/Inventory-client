@@ -2,6 +2,7 @@
 import React from 'react';
 
 function InventoryDocumentation({ action, inventory, worker, image}) {
+  const sortedInventory = inventory.slice().sort((a,b) => a.Name - b.Name)
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const currentDateTime = new Date();
   const formattedDate = currentDateTime.toLocaleDateString('en-US', {
@@ -53,7 +54,7 @@ function InventoryDocumentation({ action, inventory, worker, image}) {
       </p>
 
       <div style={{display:"flex", flexDirection:'row',alignItems:'center',justifyContent:'space-evenly',flexWrap:'wrap',fontFamily:"'Jua','Jua Placeholder',sans-serif", fontWeight:'lighter'}}>
-        {inventory.map((item, index) => (
+        {sortedInventory.map((item, index) => (
           <div key={index}>
             <p>Inventory {index + 1}:</p>
             <img style={{ width: 250, height: 100 }} src={image[index]} alt={`Image ${index}`} />

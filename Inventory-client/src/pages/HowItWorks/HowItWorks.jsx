@@ -33,7 +33,7 @@ const HowItWorks = () => {
     <p>Returning items is just as straightforward. Log in, choose the items you're returning, and the application will walk you through the process. Again, a statement is produced after the return is confirmed, providing a clear record of the transaction.</p>
     <p>Our primary focus is efficiency, accountability, and user-friendliness. By combining the ability to explore rooms freely with the power to complete transactions upon logging in, we offer you a seamless inventory management experience. Feel confident knowing that each transaction is accompanied by a printed statement, promoting transparency and communication.</p>
     <div className="how-it-works-get-started-button animate__animated animate__fadeInUp">
-     <Link to='/login' class="button-how-it-works">Get Started</Link>
+     <Link to='/rooms' class="button-how-it-works">Get Started</Link>
     </div>
   </div>
 </section>
