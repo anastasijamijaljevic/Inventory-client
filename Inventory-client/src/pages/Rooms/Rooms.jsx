@@ -26,6 +26,7 @@ const Rooms = () => {
   const [roomCreated,setRoomCreated] = useState(false)
   const [selectedWorker, setSelectedWorker] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
 
   const [isRegistered, setIsRegistered] = useState(
     localStorage.getItem('isRegistered') === 'true'
@@ -232,6 +233,11 @@ const Rooms = () => {
   const handleToggleForm = () => {
     setShowForm(!showForm);
   };
+
+  const handleToggleRegistrationForm = () => {
+    setShowModal(!showModal);
+  };
+
   
 
   
@@ -425,8 +431,15 @@ const Rooms = () => {
       
       ) : (
 
-      <div>
-        <RegistrationForm setIsRegistered={handleRegistration} />
+        <div>
+        <button onClick={handleToggleRegistrationForm} className='btnRegister'>Register</button>
+        {showModal && (
+          <div className="registration-modal-overlay">
+            <div className="registration-modal-content">
+              <RegistrationForm setIsRegistered={handleRegistration} />
+            </div>
+          </div>
+        )}
       </div>
 
       )}
