@@ -12,10 +12,12 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from '../../components/Footer/Footer'
 import InventoryDocumentation from "../Documentation/documentation";
 import './RoomPage.css'
+import { Link } from "react-router-dom";
 
 const RoomPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [roomCount, setRoomCount] = useState(1);
   const [room, setRoom] = useState([]);
   const [inventory, setInventory] = useState([])
   const [image, setImage] = useState([]);
@@ -123,6 +125,8 @@ const RoomPage = () => {
   const handleInventoryFormSubmit = async (event) => {
     event.preventDefault();
 
+
+
     try {
       const uploadedImageUrl = await uploadImage();
       console.log(uploadedImageUrl)
@@ -143,6 +147,8 @@ const RoomPage = () => {
       });
 
       console.log(createdInventory)
+
+      setRoomCount(roomCount + 1);
      
       setShowInventoryForm(false);
     } catch (error) {
@@ -197,7 +203,7 @@ const RoomPage = () => {
   const printDocumentation = async (deletedInventory) => {
     if(deletedInventory){
       try{
-         await printInventoryDocumentation('discharge', [deletedInventory], worker, image)
+         await printInventoryDocumentation('discharge', [deletedInventory], worker, image, roomCount)
       } catch(error){
         console.log('Error printing documentation:', error);
       }
@@ -210,6 +216,9 @@ const RoomPage = () => {
    }
   }
 
+  const [isRegistered, setIsRegistered] = useState(
+    localStorage.getItem('isRegistered') === 'true'
+  );
 
 
 
@@ -237,6 +246,8 @@ const RoomPage = () => {
       <div className="roomContainer">
       <Navbar />
       <div className="room-details">
+
+    
         <h1>ID SOBE:{id}</h1>
         <div>
           <h1>Name:{room.name}</h1>
@@ -269,7 +280,7 @@ const RoomPage = () => {
         ))}
 
        <button onClick={() => setShowInventoryForm(true)}>Add Inventory</button>
-        <button onClick={() => deleteRoom(room.id)}>Delete Room</button>
+        <button onClick={() => deleteRoom(room.id)} >Delete Room</button>
         <br />
         <h1>Boss:</h1>
 
@@ -307,10 +318,10 @@ const RoomPage = () => {
               </option>
             ))}
           </select>
-          <button onClick={() => UpdateWorker(room.id)}>Add Boss</button>
+          <button onClick={() => UpdateWorker(room.id)} >Add Boss</button>
         </div>
         )}
-        <button onClick={() => printInventoryDocumentation('charge',inventory,worker, image)}>Print Document</button>
+        <button onClick={() => printInventoryDocumentation('charge',inventory,worker, image, roomCount)} >Print Document</button>
 
       </div>
       </div>
@@ -388,9 +399,11 @@ const RoomPage = () => {
               setImageUpload(e.target.files[0]);
               setCreatedInventory({ ...createdInventory, ImageUrl: e.target.files[0].name})
               }} />
-          <button type="submit" onClick={handleInventoryFormSubmit}>Add Inventory</button>
+          <button type="submit" onClick={handleInventoryFormSubmit} disabled={!isRegistered}>Add Inventory</button>
         </form>
       </div>
+
+    
       
       <Footer/>
     </>

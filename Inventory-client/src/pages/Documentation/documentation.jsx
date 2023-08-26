@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
-function InventoryDocumentation({ action, inventory, worker, image}) {
+function InventoryDocumentation({ action, inventory, worker, image, roomCount}) {
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const currentDateTime = new Date();
   const formattedDate = currentDateTime.toLocaleDateString('en-US', {
@@ -51,6 +51,7 @@ function InventoryDocumentation({ action, inventory, worker, image}) {
         I, <span style={{fontFamily:"Impact,Haettenschweiler,'Arial Narrow Bold', sans-serif", fontWeight:"lighter"}}>{userInfo.username}</span>, hereby confirm that on {formattedDate}, I have  
          {action === 'charge' ? ' charged' : ' discharged'} the following items from our inventory:
       </p>
+      <p>Ordinal number of the debt: {roomCount}</p>
 
       <div style={{display:"flex", flexDirection:'row',alignItems:'center',justifyContent:'space-evenly',flexWrap:'wrap',fontFamily:"'Jua','Jua Placeholder',sans-serif", fontWeight:'lighter'}}>
         {inventory.map((item, index) => (

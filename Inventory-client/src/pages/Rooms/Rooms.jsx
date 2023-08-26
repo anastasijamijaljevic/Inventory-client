@@ -194,7 +194,7 @@ const Rooms = () => {
     try {
       const response = await api.post('/api/Room', createdRoom);
       console.log('User created successfully:', response.data);
-      const data = response.data
+      const data = response.data;
       getAllRooms();
       return data;
     } catch (error) {
@@ -260,31 +260,29 @@ const Rooms = () => {
     <Navbar/>
     <div className="room-list-container">
       <h1>Rooms</h1>
-      <ul className="room-list">
-        {rooms.map((room) => (
-          <Link to={`../room/${room.id}`} key={room.id} className="room-link">
-            <li className="room-item">
-            <div className="room-icon">
-              <FaWarehouse size={60} />
-              </div>
-              <div className='room-name'>
-                {room.name}
-              </div>
-              <div className='room-info'>
-                <strong>Floor:</strong> {room.floor}
-              </div>
-              <div className='room-info'>
-                <strong>Boss:</strong> {room.boss}
-              </div>
-
-                <div>
-                  {/* <strong>Inventory:</strong> {room.inventory[0].Name} */}
-                </div>
-              
-            </li>
-          </Link>
-        ))}
-      </ul>
+      {isRegistered && (
+  <ul className="room-list">
+    {rooms.map((room) => (
+      <Link to={`../room/${room.id}`} key={room.id} className="room-link">
+        <li className="room-item">
+          <div className="room-icon">
+            <FaWarehouse size={60} />
+          </div>
+          <div className='room-name'>
+            {room.name}
+          </div>
+          <div className='room-info'>
+            <strong>Floor:</strong> {room.floor}
+          </div>
+          <div className='room-info'>
+            <strong>Boss:</strong> {room.boss}
+          </div>
+          {/* Ostatak koda za prikaz informacija o sobi */}
+        </li>
+      </Link>
+    ))}
+  </ul>
+)}
 
       {isRegistered ? (
       <div>

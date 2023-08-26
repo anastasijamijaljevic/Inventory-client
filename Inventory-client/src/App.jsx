@@ -15,6 +15,7 @@ import RoomPage from './pages/Room/RoomPage'
 import HowItWorks from './pages/HowItWorks/HowItWorks'
 
 
+
 function App() {
   const [count, setCount] = useState(0)
   const [inventory, setInventory] = useState({});
@@ -222,6 +223,12 @@ function App() {
   };
 
 
+
+    const [isRegistered, setIsRegistered] = useState(
+      localStorage.getItem('isRegistered') === 'true'
+    );
+
+
   useEffect(() => {
     //getAllInventories();
     //getInventoryById("d74e3a55-7a36-428c-a2f7-5360a1c643ee");
@@ -241,9 +248,10 @@ function App() {
 
   return (
     <>
+ 
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/rooms' element={<Rooms />} />
+        <Route path='/rooms'   element={ <Rooms />} />
         <Route path='/about' element={<AboutUs />} />
         <Route path='/login' element={<LoginForm />} />
         <Route path='/register' element={<RegistrationForm />} />
