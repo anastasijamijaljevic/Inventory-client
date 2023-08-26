@@ -228,6 +228,7 @@ const Rooms = () => {
     localStorage.removeItem('isLoggedIn');
     setIsRegistered(false);
     setIsLoggedIn(false);
+    setShowForm(false);
   };
 
   const handleToggleForm = () => {
@@ -259,7 +260,7 @@ const Rooms = () => {
   <>
     <Navbar/>
     <div className="room-list-container">
-      <h1>Rooms</h1>
+     
       {isRegistered && (
   <ul className="room-list">
     {rooms.map((room) => (
@@ -277,7 +278,7 @@ const Rooms = () => {
           <div className='room-info'>
             <strong>Boss:</strong> {room.boss}
           </div>
-          {/* Ostatak koda za prikaz informacija o sobi */}
+       
         </li>
       </Link>
     ))}
@@ -288,7 +289,7 @@ const Rooms = () => {
       <div>
         <div className='buttons-container'>
         <button onClick={handleToggleForm}>Add room</button>
-        <button onClick={handleLogout}>Log Out</button> </div>
+        <button onClick={ handleLogout}>Log Out</button> </div>
         {showForm && (
           <div className={`room-form ${showForm ? 'active' : ''} ${isExpanded ? 'expanded' : ''}`}>
           <form onSubmit={handleSubmit}>
@@ -375,6 +376,7 @@ const Rooms = () => {
               value={item.Name}
               onChange={(event) => handleInventoryChange(event, index)}
             />
+               <label htmlFor="Floor">Serial Number:</label>
              <input
               type="text"
               placeholder="Item SerialNumber"
@@ -382,6 +384,7 @@ const Rooms = () => {
               value={item.SerialNumber}
               onChange={(event) => handleInventoryChange(event, index)}
             />
+   
              <input
               type="text"
               placeholder="Item Mark"
@@ -389,6 +392,7 @@ const Rooms = () => {
               value={item.Mark}
               onChange={(event) => handleInventoryChange(event, index)}
             />
+        
              <input
               type="text"
               placeholder="Item Model"
@@ -396,6 +400,7 @@ const Rooms = () => {
               value={item.Model}
               onChange={(event) => handleInventoryChange(event, index)}
             />
+            <label htmlFor="Floor">Quantity:</label>
              <input
               type="text"
               placeholder="Item Quantity"
@@ -403,6 +408,7 @@ const Rooms = () => {
               value={item.Quantity}
               onChange={(event) => handleInventoryChange(event, index)}
             />
+            <label htmlFor="Floor">Price:</label>
              <input
               type="text"
               placeholder="Item Price"
@@ -410,6 +416,7 @@ const Rooms = () => {
               value={item.Price}
               onChange={(event) => handleInventoryChange(event, index)}
             />
+          
             <label htmlFor="Image">Image</label>
             <input 
               type="file" 

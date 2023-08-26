@@ -248,7 +248,7 @@ const RoomPage = () => {
       <div className="room-details">
 
     
-        <h1>ID SOBE:{id}</h1>
+      
         <div>
           <h1>Name:{room.name}</h1>
           <h1>Floor:{room.floor}</h1>
