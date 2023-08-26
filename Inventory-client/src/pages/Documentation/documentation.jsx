@@ -1,8 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 
+
 function InventoryDocumentation({ action, inventory, worker, image, roomCount}) {
+
+  
   const sortedInventory = inventory.slice().sort((a,b) => a.Name - b.Name)
+
+
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   const currentDateTime = new Date();
   const formattedDate = currentDateTime.toLocaleDateString('en-US', {
